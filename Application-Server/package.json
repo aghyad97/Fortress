@@ -2,16 +2,19 @@
   "name": "fortress",
   "version": "1.0.0",
   "description": "IoT Project",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "test": "nyc _mocha --timeout 10000 --exit --report lcovonly -- -R spec",
+    "lint": "eslint --fix --config .eslintrc.json \"**/*.js\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
+    "core-util-is": "^1.0.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -21,9 +24,16 @@
     "mongoose": "^5.10.9",
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.14",
-    "nodemon": "^2.0.5",
     "passport": "^0.4.1",
     "pug": "^3.0.0",
     "yup": "^0.29.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "4.3.0",
+    "mocha": "^8.1.3",
+    "nyc": "^15.1.0",
+    "nodemon": "^2.0.5",
+    "eslint": "^7.11.0"
   }
 }
