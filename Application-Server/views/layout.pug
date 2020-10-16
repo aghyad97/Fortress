@@ -1,13 +1,49 @@
-html
+doctype html
+html(lang='en')
     head
-        link(rel="stylesheet", href="/static/style.css")
+        meta(charset='utf-8')
+        title #{title}
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(name='description', content='')
+        meta(name='author', content='')
+        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous")
+        link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Righteous&display=swap")
+        link(rel="stylesheet", href="/static/css/style.css")
+        link(rel="icon", href="/static/icons/Safe.ico", type="image/x-icon")
     body
-        h1 Hello World, this is #{siteName}!
+        nav.navbar.navbar-expand-lg.navbar-light.bg-light 
+            a.navbar-brand(href='#')
+                img.d-inline-block.align-top(src='/static/icons/Safe.ico' width='30' height='30' alt='')
+                |     Fortress
+            button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarNavDropdown.collapse.navbar-collapse
+                ul.navbar-nav
+                    li.nav-item.active
+                        a.nav-link(href='#')
+                            | Home 
+                            span.sr-only (current)
+                    li.nav-item
+                        a.nav-link(href='#') About
+                    li.nav-item
+                        a.nav-link(href='#') Github
+            form.form-inline
+                button.btn.btn-outline-dark.my-2.mr-sm-2(type='submit') Login
+                button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Register
 
-        if user != null
-            p Hi there, #{user.username}!
-        else
-            p Hi there, unknown person!
 
         block content
             p This page doesn't have any content yet.
+
+        
+        script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" 
+        crossorigin="anonymous")
+
+        script(src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" 
+        crossorigin="anonymous")
+
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" 
+        integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" 
+        crossorigin="anonymous")
