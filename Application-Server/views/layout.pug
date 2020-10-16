@@ -9,28 +9,27 @@ html(lang='en')
         link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous")
         link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Righteous&display=swap")
         link(rel="stylesheet", href="/static/css/style.css")
-        link(rel="icon", href="/static/icons/Safe.ico", type="image/x-icon")
+        link(rel="icon", href="/static/icons/code.svg", type="image/svg")
     body
-        nav.navbar.navbar-expand-lg.navbar-light.bg-light 
-            a.navbar-brand(href='#')
-                img.d-inline-block.align-top(src='/static/icons/Safe.ico' width='30' height='30' alt='')
+        nav.navbar.navbar-expand-lg.navbar-light.bg-light
+            a.navbar-brand(href='/')
+                img.d-inline-block.align-top(src='/static/icons/code.svg' width='30' height='30' alt='')
                 |     Fortress
-            button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
+            button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
                 span.navbar-toggler-icon
-            #navbarNavDropdown.collapse.navbar-collapse
-                ul.navbar-nav
+            #navbarSupportedContent.collapse.navbar-collapse
+                ul.navbar-nav.mr-auto
                     li.nav-item.active
-                        a.nav-link(href='#')
+                        a.nav-link(href='/')
                             | Home 
                             span.sr-only (current)
                     li.nav-item
-                        a.nav-link(href='#') About
+                        a.nav-link(href='about') About
                     li.nav-item
-                        a.nav-link(href='#') Github
-            form.form-inline
-                button.btn.btn-outline-dark.my-2.mr-sm-2(type='submit') Login
-                button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Register
-
+                        a.nav-link(href='https://github.com/aghyad97/IoT-Project') Github
+                form.form-inline.my-2.my-lg-0
+                    a.btn.btn-outline-dark.mr-sm-2(href='login') Login
+                    a.btn.btn-outline-success.my-2.my-sm-0(href='register') Register
 
         block content
             p This page doesn't have any content yet.

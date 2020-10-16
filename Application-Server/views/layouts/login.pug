@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+    .col-lg-4.col-md-4.col-sm-4.container.justify-content-center
+        h1 #{title}
+        form(id="login" action="/login" method="post")
+            .form-group
+                label(for='email') Email address
+                input#email.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter email')
+                small#email.form-text.text-muted
+            .form-group
+                label(for='password') Password
+                input#password.form-control(type='password' placeholder='Password')
+            button.btn.btn-dark(type='submit') Login
+
