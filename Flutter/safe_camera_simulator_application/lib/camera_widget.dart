@@ -14,13 +14,13 @@ class CameraWidget extends StatelessWidget {
   CameraDescription selectedCamera; // currently selected camera
   Future<void> _initializeControllerFuture;
   var isReady = 0.obs;
-  var nSentImages = 0.obs;
+  var nSentImages = 0;
   var nConvertedImages = 0.obs;
   CameraImage _savedImage;
   List<int> convertedImage;
   Image cImage;
 
-  final String serverEndPoint = 'http://10.0.1.42:1234/image';
+  final String serverEndPoint = 'http://192.168.1.29:3000/image';
 
   Future<void> getCameras() async {
     // gets the cameras list
@@ -53,7 +53,7 @@ class CameraWidget extends StatelessWidget {
   // CameraImage YUV420_888 -> PNG -> Image (compresion:0, filter: none)
   // Black
   imglib.Image _convertYUV420(CameraImage image) {
-    var img = imglib.Image(image.width, image.height); // Create Image buffer
+    var img = imglib.Image(image.width, image.height,); // Create Image buffer
     final int uvRowStride = image.planes[1].bytesPerRow;
     final int uvPixelStride = image.planes[1].bytesPerPixel;
     Plane plane = image.planes[0];
@@ -96,10 +96,10 @@ class CameraWidget extends StatelessWidget {
         img = _convertBGRA8888(image);
       }
 
-      imglib.PngEncoder jpegEncoder =
-          new imglib.PngEncoder(level: 0, filter: 0);
+      imglib.JpegEncoder jpegEncoder =
+          new imglib.JpegEncoder();
 
-      // Convert to png
+      // // Convert to png
       convertedImage = jpegEncoder.encodeImage(img);
       final base64image = base64Encode(convertedImage);
 
@@ -110,6 +110,7 @@ class CameraWidget extends StatelessWidget {
       }).catchError((err) {
         print(err);
       });
+      print('sent image');
       return convertedImage;
     } catch (e) {
       print(">>>>>>>>>>>> ERROR:" + e.toString());
@@ -117,52 +118,14 @@ class CameraWidget extends StatelessWidget {
     return null;
   }
 
-  // Future<Image> convertYUV420toImage(CameraImage image) async {
-
-  //     try {
-  //       final int width = image.width;
-  //       final int height = image.height;
-
-  //       // imgLib -> Image package from https://pub.dartlang.org/packages/image
-  //       var img = imglib.Image(width, height); // Create Image buffer
-
-  //       // Fill image buffer with plane[0] from YUV420_888
-  //       for(int x=0; x < width; x++) {
-  //         for(int y=0; y < height; y++) {
-  //           final pixelColor = image.planes[0].bytes[y * width + x];
-  //           // color: 0x FF  FF  FF  FF
-  //           //           A   B   G   R
-  //           // Calculate pixel color
-  //           img.data[y * width + x] = (0xFF << 24) | (pixelColor << 16) | (pixelColor << 8) | pixelColor;
-  //         }
-  //       }
-
-  //       imglib.PngEncoder pngEncoder = new imglib.PngEncoder(level: 0, filter: 0);
-  //       List<int> png = pngEncoder.encodeImage(img);
-  //       muteYUVProcessing = false;
-  //       return Image.memory(png);
-  //     } catch (e) {
-  //       print(">>>>>>>>>>>> ERROR:" + e.toString());
-  //     }
-  //     return null;
-  // }
-
   _processCameraImage(CameraImage image) {
     // do stuff with it?
     if ((nSentImages % 30) == 1) {
       print('converting image');
       convertImagetoPng(_savedImage);
-      // final base64image = base64Encode(convertedImage);
-      // http.post(serverEndPoint, body: {
-      //   "image": base64image,
-      // }).then((res) {
-      //   print(res.statusCode);
-      // }).catchError((err) {
-      //   print(err);
-      // });
     }
-    _savedImage = image;
     nSentImages++;
+    _savedImage = image;
   }
 
   Future<void> infinitePictureCapture() async {
