@@ -132,7 +132,7 @@ class CameraWidget extends StatelessWidget {
     try {
       await _initializeControllerFuture; // await to make sure it initalized
 
-      _controller.startImageStream((image) => _processCameraImage(image));
+      _controller?.startImageStream((image) => _processCameraImage(image));
     } catch (e) {
       print(e);
     }

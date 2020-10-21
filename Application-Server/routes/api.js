@@ -1,6 +1,7 @@
-var express = require("express");
-var tf = require("@tensorflow/tfjs-node");
+const express = require("express");
+const tf = require("@tensorflow/tfjs-node");
 const { model } = require("mongoose");
+const apiResponse = require("../helpers/apiResponse");
 
 var router = express.Router();
 
@@ -27,11 +28,16 @@ async function runPredictionOnBase64Image(inputImage, tensorflowModel) {
 }
 
 router.post("/image", function(req, res) {
-    console.log('recieved image');
-    var img = req.body.image;
-    img = Buffer.from(img,"base64");
-    prediction = runPredictionOnBase64Image(img, tensorflowModel)
-	res.send('finished prediction');
+    try {
+        console.log('Recieved image');
+        var img = req.body.image;
+        img = Buffer.from(img,"base64");
+        prediction = runPredictionOnBase64Image(img, tensorflowModel)
+        // res.send('finished prediction');
+        return apiResponse.successResponse(res, 'Prediction Success');
+    } catch (error) {
+        return apiResponse.ErrorResponse(res, 'Error');
+    }
 });
 
 module.exports = router;
