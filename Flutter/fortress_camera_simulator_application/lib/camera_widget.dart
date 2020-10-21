@@ -16,6 +16,9 @@ class CameraWidget extends StatelessWidget {
   var isReady = 0.obs;
   var nSentImages = 0;
   var nConvertedImages = 0.obs;
+  CameraImage _savedImage;
+  List<int> convertedImage;
+  Image cImage;
 
   final String serverEndPoint = 'http://10.0.1.42:3000/api/image';
 
@@ -30,7 +33,7 @@ class CameraWidget extends StatelessWidget {
     print('initialized camera with name ' + selectedCamera.name);
     _controller = CameraController(
       selectedCamera,
-      ResolutionPreset.low,
+      ResolutionPreset.medium,
     );
     _initializeControllerFuture = _controller.initialize();
     await _initializeControllerFuture;
@@ -56,6 +59,8 @@ class CameraWidget extends StatelessWidget {
     ); // Create Image buffer
     final int uvRowStride = image.planes[1].bytesPerRow;
     final int uvPixelStride = image.planes[1].bytesPerPixel;
+    Plane plane = image.planes[0];
+    const int shift = (0xFF << 24);
 
     // Fill image buffer with plane[0] from YUV420_888
     for (int x = 0; x < image.width; x++) {
@@ -97,7 +102,7 @@ class CameraWidget extends StatelessWidget {
       imglib.JpegEncoder jpegEncoder = new imglib.JpegEncoder();
 
       // // Convert to png
-      List<int> convertedImage = jpegEncoder.encodeImage(img);
+      convertedImage = jpegEncoder.encodeImage(img);
       final base64image = base64Encode(convertedImage);
 
       http.post(serverEndPoint, body: {
@@ -121,9 +126,10 @@ class CameraWidget extends StatelessWidget {
     if ((nSentImages % 15) == 1) {
       // send every n frames
       print('converting image');
-      convertImagetoPng(image);
+      convertImagetoPng(_savedImage);
     }
     nSentImages++;
+    _savedImage = image;
   }
 
   Future<void> infinitePictureCapture() async {
@@ -138,6 +144,7 @@ class CameraWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var convertedImage;
     final _cameraFutureBuilder = FutureBuilder(
       future: getCameras(), // which future to wait till complete
       builder: (context, snapshot) {
