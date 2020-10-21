@@ -27,6 +27,7 @@ async function startServer() {
   app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
   app.post("/api/image", function(req, res){
     console.log('recieved image from flutter');
+    console.log(req.headers['content-length']);
     return res.send("OK");
 
     var img = req.body.image;
