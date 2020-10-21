@@ -7,7 +7,6 @@ import 'package:camera/camera.dart';
 import 'package:image/image.dart' as imglib;
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 
 class CameraWidget extends StatelessWidget {
   CameraController _controller;
@@ -117,7 +116,7 @@ class CameraWidget extends StatelessWidget {
   }
 
   _processCameraImage(CameraImage image) {
-    if ((nSentImages % 120) == 1 && isTransmitting.value) {
+    if ((nSentImages % 15) == 1 && isTransmitting.value) {
       // send every n frames and only when button is pressed
       print('converting image');
       convertImagetoPng(image);
@@ -139,25 +138,23 @@ class CameraWidget extends StatelessWidget {
     // starts transmitting if not transmitting
     // and stops transmitting if currently transmitting
     isTransmitting.toggle(); // flips bool value of isTransmitting
-    print(isTransmitting);
 
     if (isTransmitting.value)
-      Fluttertoast.showToast(
-        msg: 'Starting image upload',
+      Get.snackbar(
+        'Image Upload',
+        'Starting',
         backgroundColor: Colors.grey[400],
-        textColor: Colors.black87,
       );
     else
-      Fluttertoast.showToast(
-        msg: 'Stopping image upload',
+      Get.snackbar(
+        'Image Upload',
+        'Stopping',
         backgroundColor: Colors.grey[400],
-        textColor: Colors.black87,
       );
   }
 
   @override
   Widget build(BuildContext context) {
-    var convertedImage;
     final _cameraFutureBuilder = FutureBuilder(
       future: getCameras(), // which future to wait till complete
       builder: (context, snapshot) {
