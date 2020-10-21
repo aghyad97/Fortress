@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,8 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Safe Camera Simulator',
-      home: CameraWidget(),
-    );
+        title: 'Safe Camera Simulator',
+        home: CameraWidget(),
+        theme: ThemeData(
+          primaryColor: Color(0xFF4dd0e1),
+          accentColor: Color(0xFFff5722),
+        ));
   }
 }

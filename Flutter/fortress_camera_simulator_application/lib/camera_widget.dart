@@ -7,6 +7,7 @@ import 'package:camera/camera.dart';
 import 'package:image/image.dart' as imglib;
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CameraWidget extends StatelessWidget {
   CameraController _controller;
@@ -15,8 +16,7 @@ class CameraWidget extends StatelessWidget {
   Future<void> _initializeControllerFuture;
   var isReady = 0.obs;
   var nSentImages = 0;
-  var nConvertedImages = 0.obs;
-
+  var isTransmitting = false.obs;
   final String serverEndPoint = 'http://10.0.1.42:3000/api/image';
 
   Future<void> getCameras() async {
@@ -56,8 +56,6 @@ class CameraWidget extends StatelessWidget {
     ); // Create Image buffer
     final int uvRowStride = image.planes[1].bytesPerRow;
     final int uvPixelStride = image.planes[1].bytesPerPixel;
-    Plane plane = image.planes[0];
-    const int shift = (0xFF << 24);
 
     // Fill image buffer with plane[0] from YUV420_888
     for (int x = 0; x < image.width; x++) {
@@ -119,9 +117,8 @@ class CameraWidget extends StatelessWidget {
   }
 
   _processCameraImage(CameraImage image) {
-    // do stuff with it?
-    if ((nSentImages % 15) == 1) {
-      // send every n frames
+    if ((nSentImages % 120) == 1 && isTransmitting.value) {
+      // send every n frames and only when button is pressed
       print('converting image');
       convertImagetoPng(image);
     }
@@ -136,6 +133,26 @@ class CameraWidget extends StatelessWidget {
     } catch (e) {
       print(e);
     }
+  }
+
+  void _startStopImageUpload() {
+    // starts transmitting if not transmitting
+    // and stops transmitting if currently transmitting
+    isTransmitting.toggle(); // flips bool value of isTransmitting
+    print(isTransmitting);
+
+    if (isTransmitting.value)
+      Fluttertoast.showToast(
+        msg: 'Starting image upload',
+        backgroundColor: Colors.grey[400],
+        textColor: Colors.black87,
+      );
+    else
+      Fluttertoast.showToast(
+        msg: 'Stopping image upload',
+        backgroundColor: Colors.grey[400],
+        textColor: Colors.black87,
+      );
   }
 
   @override
@@ -164,10 +181,19 @@ class CameraWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('temp title'),
+        title: Text(
+          'Security Camera Simulator',
+        ),
       ),
       body: Center(
         child: _cameraFutureBuilder,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _startStopImageUpload(),
+        child: Icon(
+          Icons.file_upload,
+          color: Colors.black,
+        ),
       ),
     );
   }
