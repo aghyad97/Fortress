@@ -14,6 +14,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Undecided title',
       home: HomePage(),
+      theme: ThemeData(
+        primaryColor: Colors.white,
+        fontFamily: 'Changa',
+      ),
     );
   }
 }

@@ -138,7 +138,6 @@ class CameraWidget extends StatelessWidget {
     // starts transmitting if not transmitting
     // and stops transmitting if currently transmitting
     isTransmitting.toggle(); // flips bool value of isTransmitting
-
     if (isTransmitting.value)
       Get.snackbar(
         'Image Upload',

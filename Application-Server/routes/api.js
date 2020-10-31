@@ -2,9 +2,9 @@ const express = require("express");
 const tf = require("@tensorflow/tfjs-node");
 const { model } = require("mongoose");
 const apiResponse = require("../helpers/apiResponse");
-
+const imageModel = require("../models/imageModel");
 var router = express.Router();
-
+const date = new Date();
 const tensorflowModel = loadModel();
 
 async function loadModel() {
@@ -30,10 +30,25 @@ async function runPredictionOnBase64Image(inputImage, tensorflowModel) {
 router.post("/image", function(req, res) {
     try {
         console.log('Recieved image');
-        var img = req.body.image;
-        img = Buffer.from(img,"base64");
+        var base64img = req.body.image;
+        var userId = mongoose.ObjectId(req.body.userId); // get userId from camera app
+        var img = Buffer.from(img,"base64");
         prediction = runPredictionOnBase64Image(img, tensorflowModel)
-        // res.send('finished prediction');
+        isPredict = (prediction[0][0] > 0.60) // true only if probability is >60%
+        if (date.getSeconds() % 15) {
+            // write to database every 15 seconds
+            // need to add user to camera app to be able to write
+            imageModel.bulkWrite([{
+                insertOne: {
+                    userId: userId,
+                    image: base64img,
+                    isPredict: isPredict,
+            }}]);
+        }
+        if (isPredict) {
+            // if person is detected than warn the user on
+            // the main application or browser
+        }
         return apiResponse.successResponse(res, 'Prediction Success');
     } catch (error) {
         return apiResponse.ErrorResponse(res, 'Error');

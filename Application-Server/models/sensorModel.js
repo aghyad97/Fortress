@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var sensorSchema = new mongoose.Schema({
-  userId: {type: ObjectId, required: true},
+  userId: {type: mongoose.ObjectId, required: true},
 	x: {type: String, required: true},
 	y: {type: String, required: true},
 	z: {type: String, required: true},
