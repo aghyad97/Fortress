@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'HomePage.dart';
+import 'WelcomePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,13 +10,16 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    const _fortressAssetImage = AssetImage('assets/icons/code.png');
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Undecided title',
-      home: HomePage(),
+      home: WelcomePage(
+        fortressAssetImage: _fortressAssetImage,
+      ),
       theme: ThemeData(
         primaryColor: Colors.white,
-        fontFamily: 'Changa',
+        accentColor: Colors.purple[900],
       ),
     );
   }
