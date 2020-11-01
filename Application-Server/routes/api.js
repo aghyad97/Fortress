@@ -12,6 +12,8 @@ async function loadModel() {
     return loadedModel;
 }
 
+
+
 async function runPredictionOnBase64Image(inputImage, tensorflowModel) {
     tensorflowModel = await tensorflowModel; // make sure model is loaded
     let imageArray = new Uint8Array(inputImage); // replace with imageData when decoding base64
@@ -24,17 +26,35 @@ async function runPredictionOnBase64Image(inputImage, tensorflowModel) {
     prediction = tensorflowModel.predict(tensor3d);
     console.timeEnd('predictImage');
     prediction.print();
-    return prediction
+    return prediction;
 }
 
+async function connectToPhoneSensors() {
+    // TODO: connect to phone and get sensor information
+
+}
+
+// TODO: inform camera app when something is detected with the sonsors
+
+router.get('/getimages', function(req, res) {
+    // TODO: Make sure it is a logged-in user sending, not anyone else
+    // TODO: send last 5 images to user
+    try {
+        
+    } catch (error) {
+
+    }
+});
+
 router.post("/image", function(req, res) {
+    // TODO: Make sure it is a logged-in user sending, not anyone else
     try {
         console.log('Recieved image');
         var base64img = req.body.image;
         var userId = mongoose.ObjectId(req.body.userId); // get userId from camera app
         var img = Buffer.from(img,"base64");
-        prediction = runPredictionOnBase64Image(img, tensorflowModel)
-        isPredict = (prediction[0][0] > 0.60) // true only if probability is >60%
+        prediction = runPredictionOnBase64Image(img, tensorflowModel);
+        isPredict = (prediction[0][0] > 0.60); // true only if probability is >60%
         if (date.getSeconds() % 15) {
             // write to database every 15 seconds
             // need to add user to camera app to be able to write

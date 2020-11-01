@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var imageSchema = new mongoose.Schema({
-  userId: {type: mongoose.ObjectId, required: true},
+//   userId: {type: mongoose.ObjectId, required: true},
   image: {type: String, required: true},
   isPredict: {type: Boolean, required: false},
 }, {timestamps: true});
