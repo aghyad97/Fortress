@@ -3,12 +3,13 @@ const { body,validationResult } = require("express-validator");
 const { sanitizeBody } = require("express-validator");
 //helper file to prepare responses.
 const apiResponse = require("../helpers/apiResponse");
-const utility = require("../helpers/utility");
+// const utility = require("../helpers/utility");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer = require("../helpers/mailer");
 const { constants } = require("../helpers/constants");
-
+const mongoose = require("mongoose");
+// const UserModel = mongoose.model("User");
 exports.register = [
 	// Validate fields.
 	body("fullName").isLength({ min: 1 }).trim().withMessage("Full Name must be specified.")
