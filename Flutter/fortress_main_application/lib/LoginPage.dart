@@ -2,12 +2,20 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart';
+import 'package:safe_security_system_application/handlers/LoginHandler.dart';
+import 'HomePage.dart';
 
 class LoginPage extends StatelessWidget {
+  final AssetImage fortressAssetImage =
+      const AssetImage('assets/icons/code.png');
   final _formKey = GlobalKey<FormState>();
   RxBool _isShowingPassword = true.obs;
+  RxString _errorMessage = ''.obs;
   RxString _email = ''.obs;
   RxString _password = ''.obs;
+  LoginHandler handler;
+  RxBool _isLoading = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -99,31 +107,59 @@ class LoginPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(Get.height * 0.05),
               ),
+              Obx(
+                () => Text(
+                  _errorMessage.value,
+                  style: TextStyle(
+                    color: Colors.red[500],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.all(0),
-                child: RaisedButton(
-                  onPressed: () {
-                    // Validate will return true if the form is valid, or false if
-                    // the form is invalid.
-                    if (_formKey.currentState.validate()) {
-                      // Process data.
-                      // Send to the server to be validated in db
-                      print(_email);
-                      print(_password);
-                    }
-                  },
-                  color: _darkPurpleColor,
-                  splashColor: Colors.purple,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: _darkPurpleColor.computeLuminance() > 0.5
-                          ? Colors.black
-                          : Colors.white,
+                child: Obx(
+                  () => RaisedButton(
+                    onPressed: _isLoading.value
+                        ? null
+                        : () {
+                            // Validate will return true if the form is valid, or false if
+                            // the form is invalid.
+                            if (_formKey.currentState.validate()) {
+                              _isLoading.toggle();
+                              handler = new LoginHandler(
+                                  _email.value, _password.value);
+                              handler.authUser().then((map) {
+                                print(map['status']);
+                                if (map['status'] == 1) {
+                                  print('token:');
+                                  print(map['data']['token']);
+                                  _errorMessage.value = '';
+                                  _errorMessage.refresh();
+                                  Get.offAll(HomePage(
+                                      fortressAssetImage: fortressAssetImage));
+                                } else {
+                                  // 4xx error
+                                  _errorMessage.value = map['message'];
+                                  _errorMessage.refresh();
+                                }
+                                _isLoading.toggle();
+                              });
+                            }
+                          },
+                    color: _darkPurpleColor,
+                    splashColor: Colors.purple,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: _darkPurpleColor.computeLuminance() > 0.5
+                            ? Colors.black
+                            : Colors.white,
+                      ),
                     ),
                   ),
                 ),
