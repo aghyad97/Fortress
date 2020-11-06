@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
+import 'package:safe_security_system_application/CameraPreviewPage.dart';
 import 'package:safe_security_system_application/handlers/LoginHandler.dart';
 import 'HomePage.dart';
 
 class LoginPage extends StatelessWidget {
-  final AssetImage fortressAssetImage =
-      const AssetImage('assets/icons/code.png');
+  final AssetImage fortressAssetImage;
   final _formKey = GlobalKey<FormState>();
   RxBool _isShowingPassword = true.obs;
   RxString _errorMessage = ''.obs;
@@ -16,6 +16,8 @@ class LoginPage extends StatelessWidget {
   RxString _password = ''.obs;
   LoginHandler handler;
   RxBool _isLoading = false.obs;
+
+  LoginPage({@required this.fortressAssetImage});
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +35,17 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login Page'),
+        leading: Container(
+          child: Image(
+            image: fortressAssetImage,
+          ),
+          padding: EdgeInsets.all(10),
+        ),
       ),
       body: Form(
         key: _formKey,
         child: Center(
           child: ListView(
-            // crossAxisAlignment: CrossAxisAlignment.start,
             physics: ClampingScrollPhysics(),
             padding: EdgeInsets.all(Get.width * 0.05),
             shrinkWrap: true,
@@ -135,9 +142,10 @@ class LoginPage extends StatelessWidget {
                                   print('token:');
                                   print(map['data']['token']);
                                   handler.saveTime();
-                                  _errorMessage.value = '';
-                                  _errorMessage.refresh();
-                                  Get.offAll(HomePage(
+                                  Get.offAll(CameraPreviewPage(
+                                      fullName: map['data']['firstName'],
+                                      email: map['data']['email'],
+                                      jwt: map['data']['jwt'],
                                       fortressAssetImage: fortressAssetImage));
                                 } else {
                                   // 4xx error

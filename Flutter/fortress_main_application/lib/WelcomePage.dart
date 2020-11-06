@@ -9,8 +9,10 @@ import 'RegisterPage.dart';
 class WelcomePage extends StatelessWidget {
   final AssetImage fortressAssetImage;
 
-  void _goToLogin() async {
-    Get.to(LoginPage());
+  void _goToLogin() {
+    Get.to(LoginPage(
+      fortressAssetImage: fortressAssetImage,
+    ));
   }
 
   void _goToRegister() {
@@ -23,18 +25,6 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Color _loginButtonColor = Theme.of(context).accentColor;
     return Scaffold(
-        // appBar: AppBar(
-        //     title: Text(
-        //       'Fortress',
-        //       style: TextStyle(fontSize: 25),
-        //       textAlign: TextAlign.center,
-        //     ),
-        //     leading: Container(
-        //       child: Image(
-        //         image: _fortressAssetImage,
-        //       ),
-        //       padding: EdgeInsets.all(_leadingIconPadding),
-        //     )),
         body: Center(
       // alignment: Alignment.centerRight,
       child: ListView(

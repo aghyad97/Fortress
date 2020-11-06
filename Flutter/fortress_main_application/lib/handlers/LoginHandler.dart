@@ -19,6 +19,7 @@ class LoginHandler {
   }
 
   Future<Map<String, dynamic>> authUser() async {
+    // authorizes the user
     try {
       response = await dio.post("/login", data: {
         "email": email,
@@ -26,9 +27,18 @@ class LoginHandler {
       });
       return response.data;
     } on DioError catch (e) {
+      print(e.runtimeType);
+      if (e.response == null) {
+        return {
+          'status': '-1',
+          'message': 'Please connect to the internet.',
+        };
+      }
       if (e.response.statusCode == 401 || e.response.statusCode == 400) {
+        // validation errors
         return e.response.data;
       } else {
+        // Error when sending the request
         return {
           'status': '-1',
           'message': 'Something went wrong, try again later',
