@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safe_security_system_application/LoginPage.dart';
+import 'package:safe_security_system_application/handlers/RegisterHandler.dart';
+
+import 'HomePage.dart';
 
 class RegisterPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final AssetImage fortressAssetImage =
+      const AssetImage('assets/icons/code.png');
   RxString _fullName = ''.obs;
   RxString _email = ''.obs;
   RxString _password = ''.obs;
   RxString _confirmedPassword = ''.obs;
+  RxString _errorMessage = ''.obs;
+  RegisterHandler handler;
+  RxBool _isLoading = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -140,11 +149,36 @@ class RegisterPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(Get.height * 0.03),
               ),
+              Obx(
+                () => Text(
+                  _errorMessage.value,
+                  style: TextStyle(
+                    color: Colors.red[500],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               RaisedButton(
                 onPressed: () {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState.validate()) {
+                    _isLoading.toggle();
+                    handler = new RegisterHandler(
+                        _email.value, _password.value, _fullName.value);
+                    handler.authUser().then((map) {
+                      print(map['status']);
+                      if (map['status'] == 1) {
+                        _errorMessage.value = '';
+                        _errorMessage.refresh();
+                        Get.off(LoginPage());
+                      } else {
+                        // 4xx error
+                        _errorMessage.value = map['message'];
+                        _errorMessage.refresh();
+                      }
+                      _isLoading.toggle();
+                    });
                     // Process data.
                     print('validated');
                   }
