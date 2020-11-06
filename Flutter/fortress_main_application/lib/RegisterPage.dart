@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safe_security_system_application/LoginPage.dart';
-import 'package:safe_security_system_application/handlers/RegosterHandler.dart';
+import 'package:safe_security_system_application/handlers/RegisterHandler.dart';
 
 import 'HomePage.dart';
 
