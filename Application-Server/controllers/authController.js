@@ -88,7 +88,6 @@ exports.login = [
 	sanitizeBody("email").escape(),
 	sanitizeBody("password").escape(),
 	(req, res) => {
-		console.log(req);
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {

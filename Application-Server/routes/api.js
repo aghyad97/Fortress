@@ -3,6 +3,7 @@ const tf = require("@tensorflow/tfjs-node");
 const { model } = require("mongoose");
 const apiResponse = require("../helpers/apiResponse");
 const imageModel = require("../models/imageModel");
+const jwt = require("jsonwebtoken");
 const sensorModel = require("../models/sensorModel");
 // const userModel = require("../models/userModel");
 var net = require('net');
@@ -22,22 +23,8 @@ async function loadModel() {
 
 async function testMongo() {
     // reads all the iamges stored in the database
-    const doc = await userModel.find();
+    const doc = await imageModel.find();
     console.log(doc);
-}
-
-async function addTestAccount() {
-    let userData = new userModel({
-        fullName: 'Saif AlNajjar',
-        email: 'saif899056@gmail.com',
-        password: '$2y$12$VCNGdgGaUJoVKM9YhMp50uSoFfI52OKv1jWavUgcuMz71N5RzhAqq',
-        isConfirmed: true
-    });
-    userData.save(function(err, userData) {
-        if (err) console.log(err);
-        else
-            console.log('adding success');
-    });
 }
 
 async function deleteImageCollection() {
@@ -110,7 +97,13 @@ async function connectToPhoneSensors() {
 router.get('/getimages', function(req, res) {
     // TODO: Make sure it is a logged-in user sending, not anyone else
     try {
-        const docs = imageModel.find().sort({_id: -1}).limit(5) // gets the most recent 5 documents in the image collection
+        jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
+    } catch (error) {
+        console.log('invalid token found ' + req.headers.authorization);
+        return apiResponse.unauthorizedResponse(res, 'Invalid token.');
+    }
+    try {
+        const docs = imageModel.find().sort({_id: -1}).limit(5); // gets the most recent 5 documents in the image collection
         docs.lean().exec(function (err, images) { // transforms documents into JSON
             if (err) 
                 throw err;
