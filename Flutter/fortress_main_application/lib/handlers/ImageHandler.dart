@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -16,14 +17,15 @@ class ImageHandler {
 
   ImageHandler(this.token) {
     dio = new Dio(options);
+
+    // adds jwt to Authorization header to verify request at server
+    dio.options.headers['authorization'] = token;
   }
 
   Future<Map<String, dynamic>> getLastFiveImages() async {
     // authorizes the user
     try {
-      response = await dio.get("/api/getimages", queryParameters: {
-        "token": token,
-      });
+      response = await dio.get("/api/getimages");
       return response.data;
     } on DioError catch (e) {
       if (e.response == null) {

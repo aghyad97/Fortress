@@ -3,12 +3,11 @@ import 'package:get/get.dart';
 import 'package:safe_security_system_application/handlers/ImageHandler.dart';
 
 class CameraPreviewPage extends StatelessWidget {
-  final String jwt, fullName, email;
+  final String jwt, email;
   final AssetImage fortressAssetImage;
   const CameraPreviewPage(
       {@required this.fortressAssetImage,
       @required this.jwt,
-      @required this.fullName,
       @required this.email});
 
   @override

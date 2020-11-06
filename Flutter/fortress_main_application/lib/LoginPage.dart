@@ -143,9 +143,8 @@ class LoginPage extends StatelessWidget {
                                   print(map['data']['token']);
                                   handler.saveTime();
                                   Get.offAll(CameraPreviewPage(
-                                      fullName: map['data']['firstName'],
                                       email: map['data']['email'],
-                                      jwt: map['data']['jwt'],
+                                      jwt: map['data']['token'],
                                       fortressAssetImage: fortressAssetImage));
                                 } else {
                                   // 4xx error
