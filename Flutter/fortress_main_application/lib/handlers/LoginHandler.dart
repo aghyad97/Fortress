@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginHandler {
   final String email, password;
@@ -33,5 +35,12 @@ class LoginHandler {
         };
       }
     }
+  }
+
+  void saveTime() async {
+    String now = DateTime.now().toString();
+    print(now);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('loginTime', now);
   }
 }

@@ -9,7 +9,7 @@ import 'RegisterPage.dart';
 class WelcomePage extends StatelessWidget {
   final AssetImage fortressAssetImage;
 
-  void _goToLogin() {
+  void _goToLogin() async {
     Get.to(LoginPage());
   }
 

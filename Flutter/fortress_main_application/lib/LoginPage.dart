@@ -134,6 +134,7 @@ class LoginPage extends StatelessWidget {
                                 if (map['status'] == 1) {
                                   print('token:');
                                   print(map['data']['token']);
+                                  handler.saveTime();
                                   _errorMessage.value = '';
                                   _errorMessage.refresh();
                                   Get.offAll(HomePage(
