@@ -39,25 +39,25 @@ exports.register = [
 				//hash input password
 				bcrypt.hash(req.body.password,10,function(err, hash) {
 					// generate OTP for confirmation
-					let otp = utility.randomNumber(4);
+					// let otp = utility.randomNumber(4);
 					// Create User object with escaped and trimmed data
 					var user = new UserModel(
 						{
 							fullName: req.body.fullName,
 							email: req.body.email,
 							password: hash,
-							confirmOTP: otp
+							isConfirmed: true,
 						}
 					);
 					// Html email body
-					let html = "<p>Please Confirm your Account.</p><p>OTP: "+otp+"</p>";
+					// let html = "<p>Please Confirm your Account.</p><p>OTP: "+otp+"</p>";
 					// Send confirmation email
-					mailer.send(
-						constants.confirmEmails.from, 
-						req.body.email,
-						"Confirm Account",
-						html
-					).then(function(){
+					// mailer.send(
+					// 	constants.confirmEmails.from, 
+					// 	req.body.email,
+					// 	"Confirm Account",
+					// 	html
+					// ).then(function(){
 						// Save user.
 						user.save(function (err) {
 							if (err) { return apiResponse.ErrorResponse(res, err); }
@@ -68,11 +68,12 @@ exports.register = [
 							};
 							return apiResponse.successResponseWithData(res,"Registration Success.", userData);
 						});
-					}).catch(err => {
-						console.log(err);
-						return apiResponse.ErrorResponse(res,err);
-					}) ;
-				});
+					// }).catch(err => {
+					// 	console.log(err);
+					// 	return apiResponse.ErrorResponse(res,err);
+					// }) ;
+				}
+				);
 			}
 		} catch (err) {
 			//throw error in json response with status 500.
