@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safe_security_system_application/LoginPage.dart';
+import 'package:safe_security_system_application/ThankYouPage.dart';
 import 'package:safe_security_system_application/handlers/RegisterHandler.dart';
-
-import 'HomePage.dart';
 
 class RegisterPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -31,7 +29,10 @@ class RegisterPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register Page'),
+        title: Text(
+          'Register Page',
+          style: TextStyle(fontSize: 25),
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -169,12 +170,13 @@ class RegisterPage extends StatelessWidget {
                     handler.authUser().then((map) {
                       print(map['status']);
                       if (map['status'] == 1) {
-                        _errorMessage.value = '';
-                        _errorMessage.refresh();
-                        Get.off(LoginPage());
+                        Get.offAll(ThankYouPage(
+                          fortressAssetImage: fortressAssetImage,
+                        ));
                       } else {
                         // 4xx error
-                        _errorMessage.value = map['message'];
+                        _errorMessage.value =
+                            handler.getRegistrationErrorFromResponse(map);
                         _errorMessage.refresh();
                       }
                       _isLoading.toggle();

@@ -34,12 +34,9 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
-        leading: Container(
-          child: Image(
-            image: fortressAssetImage,
-          ),
-          padding: EdgeInsets.all(10),
+        title: Text(
+          'Login Page',
+          style: TextStyle(fontSize: 25),
         ),
       ),
       body: Form(

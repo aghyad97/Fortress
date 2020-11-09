@@ -46,7 +46,6 @@ class CameraPreviewPage extends StatelessWidget {
                     final base64image = imageList[index];
                     Image image = Image.memory(
                       imageHandler.translateToBytesFromBase64(base64image),
-                      height: 0.35 * Get.height,
                     );
                     return image;
                   },
