@@ -30,3 +30,43 @@
 -  How to Run
 
 		npm run dev
+## API Structure
+```
+-bin
+	- www
+- Controllers
+	- AuthController
+- Helpers
+	- ApiResponse
+	- Constants
+	- Mailer
+	- Utility
+- Middlewares
+	- JWT
+- Models
+	- imageModel
+	- sensorModel
+	- userModel
+- Public
+	- css
+	- icons
+	- js
+- Routes
+	- api
+	- auth
+	- db
+	- index
+- Views
+	- Layouts
+		- about
+		- dashboard
+		- home
+		- login
+		- register
+	- error
+	- index
+	- layout
+- .env
+- app
+- package.json
+```
