@@ -8,7 +8,7 @@ var apiRouter = require("./routes/api");
 var apiResponse = require("./helpers/apiResponse");
 var cors = require("cors");
 var authRouter = require("./routes/auth");
-
+var mqttClient = require('./middlewares/mqttClient');
 
 // DB connection
 var MONGODB_URL = process.env.MONGODB_URL;

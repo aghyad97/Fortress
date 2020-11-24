@@ -14,7 +14,6 @@ const tensorflowModel = loadModel();
 // testMongo();
 // deleteImageCollection();
 // addTestAccount();
-connectToPhoneSensors();
 var isNotLimiting = true;
 async function loadModel() {
     var loadedModel = await tf.loadLayersModel('https://raw.githubusercontent.com/Internet-and-IoT-Lab-group/COE457-Labs/master/test stuff/EN3_PersonNoPerson_classifier_TfJS/model.json');
@@ -58,38 +57,6 @@ async function runPredictionOnBase64Image(inputImage, tensorflowModel) {
     prediction = tensorflowModel.predict(tensor3d);
    // prediction.print();
     return prediction;
-}
-
-let acc;
-function startSocketConnection () {
-    client.connect(4242, '10.0.1.118', function() {
-        console.log("connected to the logger");
-    });
-}
-async function connectToPhoneSensors() {
-    // TODO: connect to phone and get sensor information
-    startSocketConnection();
-
-    client.on('data', function(data) {
-        try{
-            //convert data to a JSON object
-            acc = JSON.parse(data.toString());
-            console.log(acc);
-            accValues = acc.accelerometer.value;
-        }
-        catch(error) {
-            console.log(error);
-        }
-    });
-    client.on('close', function() {
-        console.log('Connection closed');
-        setTimeout(startSocketConnection, 5000); // wait 5 seconds then attempt reconnection to phone
-        console.log('retrying connection');
-    });
-    client.on('error', async function(err) {
-        //console.log(err)
-    })
-
 }
 
 // TODO: inform camera app when something is detected with the sonsors
