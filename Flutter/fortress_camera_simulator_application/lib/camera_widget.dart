@@ -1,22 +1,43 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as imglib;
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:tflite/tflite.dart';
 
 class CameraWidget extends StatelessWidget {
   CameraController _controller;
   List<CameraDescription> cameras; // list of camers
   CameraDescription selectedCamera; // currently selected camera
   Future<void> _initializeControllerFuture;
+  RxBool available = true.obs;
   var isReady = 0.obs;
   var nSentImages = 0;
   var isTransmitting = false.obs;
   final String serverEndPoint = 'http://10.0.1.42:3000/api/image';
+  MqttServerClient mqttClient =
+      MqttServerClient('10.0.1.42', 'camera_app'); // port 1883
+
+  CameraWidget() {
+    _loadModelAndMqttConnect();
+  }
+  Future<void> _loadModelAndMqttConnect() async {
+    String res = await Tflite.loadModel(
+        model: "assets/model.tflite",
+        labels: "assets/labels.txt",
+        numThreads: 1, // defaults to 1
+        isAsset:
+            true, // defaults to true, set to false to load resources outside assets
+        useGpuDelegate:
+            false // defaults to false, set to true to use GPU delegate
+        );
+    await mqttClient.connect();
+    print(res);
+    print('finished loading model and connecting to client');
+  }
 
   Future<void> getCameras() async {
     // gets the cameras list
@@ -37,17 +58,6 @@ class CameraWidget extends StatelessWidget {
     print('isReady ${isReady}');
   }
 
-  imglib.Image _convertBGRA8888(CameraImage image) {
-    return imglib.Image.fromBytes(
-      image.width,
-      image.height,
-      image.planes[0].bytes,
-      format: imglib.Format.bgra,
-    );
-  }
-
-  // CameraImage YUV420_888 -> PNG -> Image (compresion:0, filter: none)
-  // Black
   imglib.Image _convertYUV420(CameraImage image) {
     var img = imglib.Image(
       image.width,
@@ -84,13 +94,11 @@ class CameraWidget extends StatelessWidget {
   // coversion functions from
   // https://gist.github.com/Alby-o/fe87e35bc21d534c8220aed7df028e03#gistcomment-3218349
 
-  Future<List<int>> convertImagetoPng(CameraImage image) async {
+  Future<String> convertImagetoPng(CameraImage image) async {
     try {
       imglib.Image img;
       if (image.format.group == ImageFormatGroup.yuv420) {
         img = _convertYUV420(image);
-      } else if (image.format.group == ImageFormatGroup.bgra8888) {
-        img = _convertBGRA8888(image);
       }
 
       imglib.JpegEncoder jpegEncoder = new imglib.JpegEncoder();
@@ -99,27 +107,60 @@ class CameraWidget extends StatelessWidget {
       List<int> convertedImage = jpegEncoder.encodeImage(img);
       final base64image = base64Encode(convertedImage);
 
-      http.post(serverEndPoint, body: {
-        "image": base64image,
-      }).then((res) {
-        print(res.statusCode);
-        print(res.body);
-      }).catchError((err) {
-        print(err);
-      });
-      print('sent image');
-      return convertedImage;
+      return base64image;
     } catch (e) {
       print(">>>>>>>>>>>> ERROR:" + e.toString());
     }
-    return null;
   }
 
-  _processCameraImage(CameraImage image) {
+  _predict(CameraImage img) async {
+    print('predicting!');
+    var recognitions = await Tflite.runModelOnFrame(
+        bytesList: img.planes.map((plane) {
+          return plane.bytes;
+        }).toList(), // required
+        imageHeight: img.height,
+        imageWidth: img.width,
+        imageMean: 127.5, // defaults to 127.5
+        imageStd: 127.5, // defaults to 127.5
+        rotation: 90, // defaults to 90, Android only
+        numResults: 2, // defaults to 5
+        threshold: 0.1, // defaults to 0.1
+        asynch: true // defaults to true
+        );
+    print(recognitions);
+    if (recognitions.isNotEmpty) if (recognitions[0]['confidence'] >= 0.6) {
+      if (available.value) {
+        // makes sure only 1 predict will go in the span of 2 seconds
+        available.toggle(); // set false to lock the function
+        print('found prediction!!!!');
+        _publishImage(img, 'project/images', true);
+        await Future.delayed(const Duration(seconds: 5), () => "5");
+        available.toggle();
+      }
+      return recognitions;
+    }
+  }
+
+  _publishImage(CameraImage img, String topic, bool prediction) async {
+    final base64image = await convertImagetoPng(img);
+    final String stringToPublish =
+        json.encode({'image': base64image, 'isPredict': prediction});
+    final publishBuilder = MqttClientPayloadBuilder();
+    publishBuilder.addString(stringToPublish);
+    mqttClient.publishMessage(
+        topic, MqttQos.atLeastOnce, publishBuilder.payload);
+  }
+
+  _processImageAndPredict(CameraImage img) {
     if ((nSentImages % 15) == 1 && isTransmitting.value) {
-      // send every n frames and only when button is pressed
-      print('converting image');
-      convertImagetoPng(image);
+      // predict around every 0.5 seconds
+      _predict(img);
+    }
+    if ((nSentImages % 150) == 1 && isTransmitting.value) {
+      // predict around every 5 seconds
+      print('publishing');
+      _publishImage(img, 'project/images', false);
     }
     nSentImages++;
   }
@@ -128,7 +169,7 @@ class CameraWidget extends StatelessWidget {
     try {
       await _initializeControllerFuture; // await to make sure it initalized
 
-      _controller?.startImageStream((image) => _processCameraImage(image));
+      _controller?.startImageStream((image) => _processImageAndPredict(image));
     } catch (e) {
       print(e);
     }

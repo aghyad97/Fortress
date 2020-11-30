@@ -2,10 +2,10 @@ var mongoose = require("mongoose");
 
 var sensorSchema = new mongoose.Schema({
 //   userId: {type: mongoose.ObjectId, required: true},
-	x: {type: String, required: true},
-	y: {type: String, required: true},
-	z: {type: String, required: true},
-  proximity: {type: String, required: true},
+	x: {type: Number, required: true},
+	y: {type: Number, required: true},
+	z: {type: Number, required: true},
+  proximity: {type: Number, required: true},
   isPredict: {type: Boolean, required: false},
 }, {timestamps: true});
 

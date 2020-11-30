@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
         title: 'Safe Camera Simulator',
         home: CameraWidget(),
         theme: ThemeData(
-          primaryColor: Color(0xFF4dd0e1),
-          accentColor: Color(0xFFff5722),
+          primaryColor: Colors.purple[900],
+          accentColor: Colors.purple[100],
         ));
   }
 }

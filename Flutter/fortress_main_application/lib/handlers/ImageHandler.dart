@@ -22,7 +22,7 @@ class ImageHandler {
     dio.options.headers['authorization'] = token;
   }
 
-  Future<Map<String, dynamic>> getLastFiveImages() async {
+  Future<Map<String, dynamic>> getImagesFromServers() async {
     // authorizes the user
     try {
       response = await dio.get("/api/getimages");
@@ -38,15 +38,31 @@ class ImageHandler {
     }
   }
 
-  List<String> getImageListFromData(String data) {
+  Future<Map<String, dynamic>> getPredictedImagesFromServers() async {
+    // authorizes the user
+    try {
+      response = await dio.get("/api/getpredictedimages");
+      return response.data;
+    } on DioError catch (e) {
+      if (e.response == null) {
+        return {
+          'status': '-1',
+          'message': 'Connection error.',
+        };
+      }
+      return e.response.data;
+    }
+  }
+
+  List<dynamic> getImageListFromData(String data) {
     // parses the data string from /api/getimages and returns only
     // the base64 image list
     final List<dynamic> parsedData = jsonDecode(data);
-    List<String> imageList = [];
-    for (final map in parsedData) {
-      imageList.add(map['image']);
-    }
-    return imageList;
+    // List<String> imageList = [];
+    // for (final map in parsedData) {
+    //   imageList.add(map['image']);
+    // }
+    return parsedData;
   }
 
   Uint8List translateToBytesFromBase64(String base64image) {

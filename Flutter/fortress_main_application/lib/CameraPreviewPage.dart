@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safe_security_system_application/handlers/ImageHandler.dart';
@@ -14,7 +16,7 @@ class CameraPreviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     const double _leadingIconPadding = 10;
     final ImageHandler imageHandler = new ImageHandler(jwt);
-    final imagesFuture = imageHandler.getLastFiveImages();
+    final imagesFuture = imageHandler.getImagesFromServers();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,11 +45,26 @@ class CameraPreviewPage extends StatelessWidget {
                   cacheExtent: 1 * Get.height,
                   itemCount: imageList.length,
                   itemBuilder: (context, index) {
-                    final base64image = imageList[index];
+                    final base64image = imageList[index]['image'];
                     Image image = Image.memory(
                       imageHandler.translateToBytesFromBase64(base64image),
                     );
-                    return image;
+                    DateTime imageTime =
+                        DateTime.parse(imageList[index]['updatedAt']);
+                    String imageTimeString = imageTime.toString();
+                    imageTimeString = imageTimeString.substring(
+                        0, imageTimeString.length - 5);
+                    Text imageTimeWidget = Text(
+                      'Image taken at ' + imageTimeString,
+                      style: TextStyle(),
+                    );
+                    return Column(
+                      children: [
+                        imageTimeWidget,
+                        image,
+                        Padding(padding: EdgeInsets.all(15)),
+                      ],
+                    );
                   },
                 ),
               );
