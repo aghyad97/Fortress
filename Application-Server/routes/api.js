@@ -4,6 +4,7 @@ const apiResponse = require("../helpers/apiResponse");
 const imageModel = require("../models/imageModel");
 const jwt = require("jsonwebtoken");
 const sensorModel = require("../models/sensorModel");
+const mqttClient = require("../middlewares/mqttClient.js");
 // const userModel = require("../models/userModel");
 var net = require('net');
 
@@ -52,6 +53,7 @@ router.post('/togglesystem', function(req, res) {
     }
     try {
         // enable/disable here
+        mqttClient.setEnabled(req.body.toggle);
         return apiResponse.successResponse(res, 'Toggle Success');
     } catch (error) {
         return apiResponse.ErrorResponse(res, 'Error');

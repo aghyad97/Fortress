@@ -40,7 +40,7 @@ mqttClient.on('message', function (topic, message) {
         })
         sensorDocument.save(function (err, sensorDocument) {
             if (err) return console.error(err);
-            console.log('success');
+            console.log('sensor success');
           }); 
     }
     else if (topic == 'project/images') {
@@ -49,7 +49,7 @@ mqttClient.on('message', function (topic, message) {
             // TODO: Send push notification to phone when found prediction
             //       to warn the user that someone was found
             //       and maybe publish the image????
-            // TODO: set isEnabled to false when user disables security system 
+            // TODO: set isEnabled to false when user disables security system
             console.log('found person!')
             // Publishes message to be read by the main app so it can display notification
             mqttClient.publish('project/foundperson', Date.now().toString());
@@ -57,9 +57,14 @@ mqttClient.on('message', function (topic, message) {
         const imageDocument = new imageModel(imageInfo);
         imageDocument.save(function (err, imageDocument) {
             if (err) return console.error(err);
-            console.log('success');
+            console.log('image success');
           });        
     }
 })
 
-module.exports = mqttClient;
+module.exports = {
+    mqttClient: mqttClient,
+    setEnabled: (enabled) => {
+        isEnabled = enabled;
+    },
+};
