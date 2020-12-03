@@ -11,13 +11,17 @@ import 'handlers/NotificationHandler.dart';
 class HomePage extends StatelessWidget {
   final String jwt, fullName, email;
   final AssetImage fortressAssetImage;
-  RxBool isOn = false.obs;
+  RxBool isOn = true.obs;
   RxBool isLoading = false.obs;
   NotificationHandler notificationHandler;
   // make everything in cosntructor @required later
   // after fixing all the problems with SharedPreferences
   HomePage({this.fortressAssetImage, this.jwt, this.fullName, this.email}) {
     notificationHandler = NotificationHandler();
+    final handler = SystemToggleHandler(jwt, isOn.value);
+    handler.toggleSystem().then((map) {
+      print(map);
+    }); // enables/disables system
   }
 
   @override
