@@ -17,6 +17,10 @@ class LoginHandler {
   LoginHandler(this.email, this.password) {
     dio = new Dio(options);
   }
+  static Future<void> logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 
   Future<Map<String, dynamic>> authUser() async {
     // authorizes the user

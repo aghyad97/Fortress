@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:safe_security_system_application/HomePage.dart';
 
 class NotificationHandler {
   MqttServerClient mqttClient =
@@ -57,8 +54,11 @@ class NotificationHandler {
             showWhen: false);
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(0, 'Person Detected!',
-        'A person was on ${foundTimeString}!', platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'Person Detected!',
+        'A person was detected on ${foundTimeString}!',
+        platformChannelSpecifics);
   }
 
   Future<void> _connectAndSubscribe() async {

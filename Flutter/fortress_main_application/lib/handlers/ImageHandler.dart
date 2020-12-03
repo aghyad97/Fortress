@@ -41,7 +41,8 @@ class ImageHandler {
   Future<Map<String, dynamic>> getPredictedImagesFromServers() async {
     // authorizes the user
     try {
-      response = await dio.get("/api/getpredictedimages");
+      response =
+          await dio.get("/api/getimages", queryParameters: {"isPredict": true});
       return response.data;
     } on DioError catch (e) {
       if (e.response == null) {

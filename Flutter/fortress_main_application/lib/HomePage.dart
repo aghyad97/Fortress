@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safe_security_system_application/handlers/SystemToggleHandler.dart';
 
+import 'WelcomePage.dart';
+import 'handlers/LoginHandler.dart';
 import 'handlers/NotificationHandler.dart';
 
 class HomePage extends StatelessWidget {
@@ -17,6 +19,7 @@ class HomePage extends StatelessWidget {
   HomePage({this.fortressAssetImage, this.jwt, this.fullName, this.email}) {
     notificationHandler = NotificationHandler();
   }
+
   @override
   Widget build(BuildContext context) {
     const double _leadingIconPadding = 10;
@@ -34,6 +37,16 @@ class HomePage extends StatelessWidget {
           ),
           padding: EdgeInsets.all(_leadingIconPadding),
         ),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout),
+              // splashColor: Colors.purple[900],
+              highlightColor: Colors.purple[900],
+              onPressed: () {
+                LoginHandler.logOut();
+                Get.offAll(WelcomePage(fortressAssetImage: fortressAssetImage));
+              })
+        ],
       ),
       body: ListView(
         physics: ClampingScrollPhysics(),

@@ -30,13 +30,21 @@ mqttClient.on('message', function (topic, message) {
     if (topic == 'project/sensors') {
 		// make sure the topic is correct
         var sensorInfo = JSON.parse(message.toString());
-        // do stuff with the accJSO
+        // do stuff with the accJSON
+        if (!sensorInfo.accelerometer)
+            return; // makes sure the accelerometer is a JSON with proper format
+        if (sensorInfo.isPredict && isEnabled) {
+            console.log('found person from sensors!')
+            // Publishes message to be read by the main app so it can display notification
+            mqttClient.publish('project/foundperson', Date.now().toString());
+        }
+
         const sensorDocument = new sensorModel({
-            x: xAcceleration,
-            y: yAcceleration,
-            z: zAcceleration,
-            proximity: proximity,
-            isPredict: isPredict,
+            x: sensorInfo.accelerometer.value[0],
+            y: sensorInfo.accelerometer.value[1],
+            z: sensorInfo.accelerometer.value[2],
+            proximity: sensorInfo.proximity,
+            isPredict: sensorInfo.isPredict,
         })
         sensorDocument.save(function (err, sensorDocument) {
             if (err) return console.error(err);
@@ -46,10 +54,6 @@ mqttClient.on('message', function (topic, message) {
     else if (topic == 'project/images') {
         var imageInfo = JSON.parse(message.toString());
         if (imageInfo.isPredict && isEnabled) {
-            // TODO: Send push notification to phone when found prediction
-            //       to warn the user that someone was found
-            //       and maybe publish the image????
-            // TODO: set isEnabled to false when user disables security system
             console.log('found person!')
             // Publishes message to be read by the main app so it can display notification
             mqttClient.publish('project/foundperson', Date.now().toString());

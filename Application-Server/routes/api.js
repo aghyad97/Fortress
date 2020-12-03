@@ -7,6 +7,7 @@ const sensorModel = require("../models/sensorModel");
 const mqttClient = require("../middlewares/mqttClient.js");
 // const userModel = require("../models/userModel");
 var net = require('net');
+const { bool } = require("yup");
 
 var client = new net.Socket();
 var router = express.Router();
@@ -41,9 +42,7 @@ async function deleteImageCollection() {
       });
 }
 
-// TODO: inform camera app when something is detected with the sonsors
 router.post('/togglesystem', function(req, res) {
-    // TODO: Disable/enable push notifications (and maybe predictions?)
     // Would basically enable/disable the system 
     try {
         jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
@@ -61,7 +60,6 @@ router.post('/togglesystem', function(req, res) {
 });
 
 router.get('/getimages', function(req, res) {
-    // TODO: Make sure it is a logged-in user sending, not anyone else
     try {
         jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
     } catch (error) {
@@ -69,38 +67,23 @@ router.get('/getimages', function(req, res) {
         return apiResponse.unauthorizedResponse(res, 'Invalid token.');
     }
     try {
-        const docs = imageModel.find().sort({_id: -1}).limit(10); // gets the most recent 5 documents in the image collection
+        // default values if query does not specify a value
+        var query = {};
+        var limit = 10;
+        if (req.query.limit) 
+            limit = parseInt(req.query.limit);
+        if (req.query.isPredict)
+            query.isPredict = (req.query.isPredict == 'true');
+        const docs = imageModel.find(query).sort({_id: -1}).limit(limit); // gets the most recent 5 documents in the image collection
         docs.lean().exec(function (err, images) { // transforms documents into JSON
             if (err) 
                 throw err;
             else
-                return apiResponse.successResponseWithData(res, 'Prediction Success', JSON.stringify(images));
+                return apiResponse.successResponseWithData(res, 'Images Sent Succesfully', JSON.stringify(images));
         })
     } catch (error) {
         return apiResponse.ErrorResponse(res, 'Error');
     }
 });
-
-router.get('/getpredictedimages', function(req, res) {
-    // TODO: Make sure it is a logged-in user sending, not anyone else
-    try {
-        jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
-    } catch (error) {
-        console.log('invalid token found ' + req.headers.authorization);
-        return apiResponse.unauthorizedResponse(res, 'Invalid token.');
-    }
-    try {
-        const docs = imageModel.find({isPredict: true}).sort({_id: -1}).limit(10); // gets the most recent 5 documents in the image collection
-        docs.lean().exec(function (err, images) { // transforms documents into JSON
-            if (err) 
-                throw err;
-            else
-                return apiResponse.successResponseWithData(res, 'Prediction Success', JSON.stringify(images));
-        })
-    } catch (error) {
-        return apiResponse.ErrorResponse(res, 'Error');
-    }
-});
-
 
 module.exports = router;

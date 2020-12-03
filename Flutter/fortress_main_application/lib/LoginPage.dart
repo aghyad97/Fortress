@@ -2,11 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dio/dio.dart';
-import 'package:safe_security_system_application/CameraPreviewPage.dart';
 import 'package:safe_security_system_application/handlers/LoginHandler.dart';
 import 'HomePage.dart';
-import 'PredictionCameraPreviewPage.dart';
 
 class LoginPage extends StatelessWidget {
   final AssetImage fortressAssetImage;
@@ -135,10 +132,7 @@ class LoginPage extends StatelessWidget {
                               handler = new LoginHandler(
                                   _email.value, _password.value);
                               handler.authUser().then((map) {
-                                print(map['status']);
                                 if (map['status'] == 1) {
-                                  print('token:');
-                                  print(map['data']['token']);
                                   handler.saveTime();
                                   Get.offAll(HomePage(
                                       email: map['data']['email'],
