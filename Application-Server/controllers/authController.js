@@ -1,9 +1,7 @@
 const UserModel = require("../models/UserModel");
 const {
 	body,
-	validationResult
-} = require("express-validator");
-const {
+	validationResult,
 	sanitizeBody
 } = require("express-validator");
 //helper file to prepare responses.
