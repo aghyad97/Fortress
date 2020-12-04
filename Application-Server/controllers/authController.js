@@ -13,7 +13,6 @@ const mailer = require("../helpers/mailer");
 const {
 	constants
 } = require("../helpers/constants");
-const mongoose = require("mongoose");
 // const UserModel = mongoose.model("User");
 exports.register = [
 	// Validate fields.
