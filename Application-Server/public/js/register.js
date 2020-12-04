@@ -1,15 +1,9 @@
 $(function () {
   $('#registerButton').click(function (e) {
     e.preventDefault();
-
-    var data = {};
-    data.fullName = $('#fullName').val();
-    data.email = $('#email').val();
-    data.password = $('#password').val();
-    console.log(JSON.stringify(data));
     $.ajax({
       type: 'post',
-      data: JSON.stringify(data),
+      data: $('#register').serialize(),
       url: '/register',
       success: function (data) {
         console.log('success');
