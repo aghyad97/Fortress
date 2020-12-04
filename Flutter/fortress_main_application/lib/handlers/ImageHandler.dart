@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:safe_security_system_application/globals/Globals.dart';
 
 class ImageHandler {
   final String token; // needed for validation when sending to the server
@@ -9,7 +10,7 @@ class ImageHandler {
   Response response;
 
   final BaseOptions options = new BaseOptions(
-    baseUrl: "http://10.0.1.42:3000",
+    baseUrl: "http://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
     connectTimeout: 5000,
     receiveTimeout: 5000,
   );
