@@ -17,10 +17,14 @@ class MyApp extends StatelessWidget {
     String time = prefs.getString('loginTime');
     email = prefs.getString('email');
     jwt = prefs.getString('jwt');
-    DateTime original = DateTime.parse((time));
-    var difference = DateTime.now().difference(original).inMinutes;
-    print(difference);
-    print(jwt);
+    if (time != null) {
+      DateTime original = DateTime.parse(time);
+      var difference = DateTime.now().difference(original).inMinutes;
+      if (difference > 120) {
+        // 2 hour expire time, need to get this from jwt though :(
+        return false;
+      }
+    }
     if (jwt != null) {
       return true;
     }
@@ -36,7 +40,6 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: checkLogin(),
         builder: (context, snapshot) {
-          print(snapshot.data);
           Widget _displayedWidget;
           if (snapshot.hasData) {
             _displayedWidget = !snapshot.data
@@ -46,6 +49,7 @@ class MyApp extends StatelessWidget {
                 : HomePage(
                     fortressAssetImage: _fortressAssetImage,
                     email: this.email,
+                    jwt: this.jwt,
                   );
           } else {
             _displayedWidget = Center(child: CircularProgressIndicator());
@@ -61,12 +65,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// home: !isLoggedIn
-//           ? WelcomePage(
-//               fortressAssetImage: _fortressAssetImage,
-//             )
-//           : HomePage(
-//               fortressAssetImage: _fortressAssetImage,
-//               email: this.email,
-//             ),

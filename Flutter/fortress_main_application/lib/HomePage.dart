@@ -18,13 +18,15 @@ class HomePage extends StatelessWidget {
   NotificationHandler notificationHandler;
   // make everything in cosntructor @required later
   // after fixing all the problems with SharedPreferences
-  HomePage({this.fortressAssetImage, this.jwt, this.email}) {
+  HomePage(
+      {@required this.fortressAssetImage,
+      @required this.jwt,
+      @required this.email}) {
     notificationHandler = NotificationHandler();
     final handler = SystemToggleHandler(jwt, isOn.value);
     handler.toggleSystem().then((map) {
       print(map);
     }); // enables/disables system\
-    print(jwt);
   }
 
   @override
@@ -47,7 +49,6 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
               icon: Icon(Icons.logout),
-              // splashColor: Colors.purple[900],
               highlightColor: Colors.purple[900],
               onPressed: () {
                 LoginHandler.logOut();
@@ -95,7 +96,6 @@ class HomePage extends StatelessWidget {
                   jwt: this.jwt,
                   email: this.email)),
               color: Colors.white,
-              splashColor: Colors.purple,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -105,6 +105,7 @@ class HomePage extends StatelessWidget {
           Padding(padding: EdgeInsets.all(Get.height * 0.05)),
           Text('Enable/Disable Security System',
               textAlign: TextAlign.center, style: TextStyle(fontSize: 25)),
+          Padding(padding: EdgeInsets.all(Get.height * 0.01)),
           Obx(
             () => Align(
               child: Transform.scale(
