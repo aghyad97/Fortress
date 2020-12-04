@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safe_security_system_application/CameraPreviewPage.dart';
+import 'package:safe_security_system_application/PredictionCameraPreviewPage.dart';
 import 'package:safe_security_system_application/handlers/SystemToggleHandler.dart';
 
 import 'WelcomePage.dart';
@@ -9,19 +11,20 @@ import 'handlers/LoginHandler.dart';
 import 'handlers/NotificationHandler.dart';
 
 class HomePage extends StatelessWidget {
-  final String jwt, fullName, email;
+  final String jwt, email;
   final AssetImage fortressAssetImage;
   RxBool isOn = true.obs;
   RxBool isLoading = false.obs;
   NotificationHandler notificationHandler;
   // make everything in cosntructor @required later
   // after fixing all the problems with SharedPreferences
-  HomePage({this.fortressAssetImage, this.jwt, this.fullName, this.email}) {
+  HomePage({this.fortressAssetImage, this.jwt, this.email}) {
     notificationHandler = NotificationHandler();
     final handler = SystemToggleHandler(jwt, isOn.value);
     handler.toggleSystem().then((map) {
       print(map);
-    }); // enables/disables system
+    }); // enables/disables system\
+    print(jwt);
   }
 
   @override
@@ -57,6 +60,49 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.all(Get.width * 0.05),
         shrinkWrap: true,
         children: [
+          Padding(padding: EdgeInsets.all(Get.height * 0.03)),
+          Container(
+            child: RaisedButton.icon(
+              icon: Icon(Icons.camera, color: Colors.white),
+              label: Text(
+                "People Detected",
+                style: TextStyle(fontSize: 30, color: Colors.white),
+              ),
+              onPressed: () => Get.to(PredictionCameraPreviewPage(
+                  fortressAssetImage: this.fortressAssetImage,
+                  jwt: this.jwt,
+                  email: this.email)),
+              color: Colors.purple[900],
+              splashColor: Colors.purple,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            height: Get.height * 0.2,
+          ),
+          Padding(padding: EdgeInsets.all(Get.height * 0.01)),
+          Container(
+            child: RaisedButton.icon(
+              label: Text(
+                "Camera Archive",
+                style: TextStyle(fontSize: 30),
+              ),
+              icon: Icon(
+                Icons.camera_roll_rounded,
+              ),
+              onPressed: () => Get.to(CameraPreviewPage(
+                  fortressAssetImage: this.fortressAssetImage,
+                  jwt: this.jwt,
+                  email: this.email)),
+              color: Colors.white,
+              splashColor: Colors.purple,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            height: Get.height * 0.2,
+          ),
+          Padding(padding: EdgeInsets.all(Get.height * 0.05)),
           Text('Enable/Disable Security System',
               textAlign: TextAlign.center, style: TextStyle(fontSize: 25)),
           Obx(

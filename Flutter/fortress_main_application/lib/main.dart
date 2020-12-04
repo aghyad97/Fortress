@@ -9,31 +9,50 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  bool isLoggedIn = false;
+  String email;
+  String jwt;
 
-  void checkLoginTime() async {
+  Future<bool> checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String time = prefs.getString('loginTime');
+    email = prefs.getString('email');
+    jwt = prefs.getString('jwt');
     DateTime original = DateTime.parse((time));
     var difference = DateTime.now().difference(original).inMinutes;
     print(difference);
-    if (difference >= 1) {
-      isLoggedIn = true;
+    print(jwt);
+    if (jwt != null) {
+      return true;
     }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    checkLoginTime();
     const _fortressAssetImage = AssetImage('assets/icons/code.png');
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Undecided title',
-      home: !isLoggedIn
-          ? WelcomePage(
-              fortressAssetImage: _fortressAssetImage,
-            )
-          : HomePage(fortressAssetImage: _fortressAssetImage),
+      home: FutureBuilder(
+        future: checkLogin(),
+        builder: (context, snapshot) {
+          print(snapshot.data);
+          Widget _displayedWidget;
+          if (snapshot.hasData) {
+            _displayedWidget = !snapshot.data
+                ? WelcomePage(
+                    fortressAssetImage: _fortressAssetImage,
+                  )
+                : HomePage(
+                    fortressAssetImage: _fortressAssetImage,
+                    email: this.email,
+                  );
+          } else {
+            _displayedWidget = Center(child: CircularProgressIndicator());
+          }
+          return _displayedWidget;
+        },
+      ),
       theme: ThemeData(
         primaryColor: Colors.white,
         accentColor: Colors.purple[900],
@@ -42,3 +61,12 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// home: !isLoggedIn
+//           ? WelcomePage(
+//               fortressAssetImage: _fortressAssetImage,
+//             )
+//           : HomePage(
+//               fortressAssetImage: _fortressAssetImage,
+//               email: this.email,
+//             ),

@@ -134,6 +134,8 @@ class LoginPage extends StatelessWidget {
                               handler.authUser().then((map) {
                                 if (map['status'] == 1) {
                                   handler.saveTime();
+                                  handler.saveUserInfo(map['data']['email'],
+                                      map['data']['token']);
                                   Get.offAll(HomePage(
                                       email: map['data']['email'],
                                       jwt: map['data']['token'],

@@ -4,7 +4,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 class NotificationHandler {
   MqttServerClient mqttClient =
-      MqttServerClient('10.0.1.42', 'main_app'); // port 1883
+      MqttServerClient('192.168.0.119', 'main_app'); // port 1883
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();

@@ -57,6 +57,6 @@ app.use((err, req, res) => {
 	}
 });
 
-// app.listen(3004);
+app.listen(3000);
 
 module.exports = app;

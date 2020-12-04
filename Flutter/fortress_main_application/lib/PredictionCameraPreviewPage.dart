@@ -24,12 +24,6 @@ class PredictionCameraPreviewPage extends StatelessWidget {
           style: TextStyle(fontSize: 25),
           textAlign: TextAlign.center,
         ),
-        leading: Container(
-          child: Image(
-            image: fortressAssetImage,
-          ),
-          padding: EdgeInsets.all(_leadingIconPadding),
-        ),
       ),
       body: FutureBuilder(
         future: imagesFuture,

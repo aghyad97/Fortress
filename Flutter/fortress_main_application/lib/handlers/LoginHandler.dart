@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginHandler {
@@ -8,7 +7,7 @@ class LoginHandler {
   Response response;
 
   BaseOptions options = new BaseOptions(
-    baseUrl: "http://10.0.2.2:3000",
+    baseUrl: "http://192.168.0.119:3000",
     connectTimeout: 5000,
     receiveTimeout: 5000,
     contentType: Headers.formUrlEncodedContentType,
@@ -56,5 +55,12 @@ class LoginHandler {
     print(now);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('loginTime', now);
+  }
+
+  void saveUserInfo(String email, String jwt) async {
+    print(email);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', email);
+    await prefs.setString('jwt', jwt);
   }
 }

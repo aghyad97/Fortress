@@ -17,9 +17,9 @@ class CameraWidget extends StatelessWidget {
   var isReady = 0.obs;
   var nSentImages = 0;
   var isTransmitting = false.obs;
-  final String serverEndPoint = 'http://10.0.1.42:3000/api/image';
+  final String serverEndPoint = 'http://192.168.0.119:3000/api/image';
   MqttServerClient mqttClient =
-      MqttServerClient('10.0.1.42', 'camera_app'); // port 1883
+      MqttServerClient('192.168.0.119', 'camera_app'); // port 1883
 
   CameraWidget() {
     _loadModelAndMqttConnect();
@@ -149,7 +149,7 @@ class CameraWidget extends StatelessWidget {
     final publishBuilder = MqttClientPayloadBuilder();
     publishBuilder.addString(stringToPublish);
     mqttClient.publishMessage(
-        topic, MqttQos.atLeastOnce, publishBuilder.payload);
+        topic, MqttQos.exactlyOnce, publishBuilder.payload);
   }
 
   _processImageAndPredict(CameraImage img) {
