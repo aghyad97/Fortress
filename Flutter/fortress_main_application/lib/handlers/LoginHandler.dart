@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:safe_security_system_application/globals/Globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginHandler {
@@ -7,7 +8,7 @@ class LoginHandler {
   Response response;
 
   BaseOptions options = new BaseOptions(
-    baseUrl: "http://10.0.1.42:3000",
+    baseUrl: "http://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
     connectTimeout: 5000,
     receiveTimeout: 5000,
     contentType: Headers.formUrlEncodedContentType,
