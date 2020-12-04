@@ -1,13 +1,9 @@
 $(function () {
   $('#loginButton').click(function (e) {
     e.preventDefault();
-    var data = {};
-    data.email = $('#email').val();
-    data.password = $('#password').val();
-    console.log(JSON.stringify(data));
     $.ajax({
       type: 'POST',
-      data: JSON.stringify(data),
+      data: $('#login').serialize(),
       url: '/login',
       success: function (data) {
         console.log('success');
