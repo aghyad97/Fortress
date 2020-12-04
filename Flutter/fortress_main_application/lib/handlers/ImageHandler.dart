@@ -9,7 +9,7 @@ class ImageHandler {
   Response response;
 
   final BaseOptions options = new BaseOptions(
-    baseUrl: "http://192.168.0.119:3000",
+    baseUrl: "http://10.0.1.42:3000",
     connectTimeout: 5000,
     receiveTimeout: 5000,
   );
