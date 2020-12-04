@@ -3,7 +3,7 @@ extends ../layout
 block content
     .col-lg-4.col-md-4.col-sm-4.container.justify-content-center
         h1 #{title}
-        form(id="login" action="/login" method="post")
+        form(id="login")
             .form-group
                 label(for='email') Email address
                 input#email.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter email' name="email")
@@ -11,5 +11,7 @@ block content
             .form-group
                 label(for='password') Password
                 input#password.form-control(type='password' placeholder='Password' name="password")
-            button.btn.btn-dark(type='submit') Login
+            button.btn.btn-dark(type='submit' id="loginButton" onclick='login()') Login
 
+    script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous')
+    script(src="static/js/login.js")

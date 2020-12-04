@@ -1,46 +1,11 @@
 const express = require("express");
-const { model } = require("mongoose");
 const apiResponse = require("../helpers/apiResponse");
 const imageModel = require("../models/imageModel");
 const jwt = require("jsonwebtoken");
-const sensorModel = require("../models/sensorModel");
 const mqttClient = require("../middlewares/mqttClient.js");
 // const userModel = require("../models/userModel");
-var net = require('net');
-const { bool } = require("yup");
 
-var client = new net.Socket();
 var router = express.Router();
-// testMongo();
-// deleteImageCollection();
-// addTestAccount();
-var isNotLimiting = true;
-
-async function testMongo() {
-    // reads all the iamges stored in the database
-    const doc = await imageModel.find();
-    console.log(doc);
-}
-
-async function deleteImageCollection() {
-    // Deletes all the non-predict images
-    // for testing purposes only
-    imageModel.remove({isPredict: false}, function(err, result) {
-        if (err) {
-          console.err(err);
-        } else {
-          console.log('success?');
-        }
-      });
-
-      imageModel.remove({isPredict: true}, function(err, result) {
-        if (err) {
-          console.err(err);
-        } else {
-          console.log('success?');
-        }
-      });
-}
 
 router.post('/togglesystem', function(req, res) {
     // Would basically enable/disable the system 
