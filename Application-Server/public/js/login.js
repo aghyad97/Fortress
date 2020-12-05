@@ -5,12 +5,22 @@ $(function () {
       type: 'POST',
       data: $('#login').serialize(),
       url: '/login',
-      headers: { Authorization: $`Bearer ${localStorage.getItem("token")}` },
       success: function (data) {
         console.log('success');
-        console.log(JSON.stringify(data));
-        window.location.href = '/dashboard';
-
+        console.log(data['data']['token']);
+        // $.ajax({
+        //   type: 'GET',
+        //   url: '/dashboard',
+        //   headers: {"authorization": data['data']['token']},
+        //   success: function (dat) {
+        //     localStorage.setItem('authorization', data['data']['token']);
+        //     window.location.href = '/dashboard';
+        //   },
+        //   error: function (jqXHR, exception) {
+        //     console.log(jqXHR.responseJSON);
+        //   }
+        // });
+        
       },
       error: function (jqXHR, exception) {
         var msg;

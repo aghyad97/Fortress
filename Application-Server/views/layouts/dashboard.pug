@@ -1,1 +1,48 @@
 extends ../layout
+
+block content
+  link(rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
+  link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
+  link(href='/static/css/material-dashboard.css' rel='stylesheet')
+  link(href='/static/css/demo.css' rel='stylesheet')
+  .content
+    .container-fluid
+      .row
+        .col-md-4
+          .card.card-chart
+            .card-header.card-header-success
+            .card-body
+              h4.card-title Sensors Data
+              p.card-category
+                span.text-success
+                  |  
+            .card-footer
+              .stats
+                |  updated
+        .col-md-4
+          .card.card-chart
+            .card-header.card-header-warning
+            .card-body
+              h4.card-title Notifications
+              p.card-category Last Notifications
+            .card-footer
+              .stats
+                |  
+        .col-md-4
+          .card.card-chart
+            .card-header.card-header-danger
+            .card-body
+              h4.card-title System Status
+              p.card-category You can turn on/off
+            .card-footer
+              .stats
+                |  All Good
+        .col-lg-12.col-md-12
+          .card
+            .card-header.card-header-warning
+              h4.card-title Pictures From Camera
+              p.card-category These pictures are updated every 15 seconds
+            .card-body.table-responsive
+              table.table.table-hover
+                thead.text-warning
+
