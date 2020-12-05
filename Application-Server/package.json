@@ -4,10 +4,11 @@
   "description": "IoT Project",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "set NODE_ENV=production&& node ./bin/www",
     "dev": "nodemon ./bin/www",
     "test": "nyc _mocha --timeout 10000 --exit --report lcovonly -- -R spec",
-    "lint": "eslint --fix --config .eslintrc.json \"**/*.js\""
+    "lint": "eslint --fix --config .eslintrc.json \"**/*.js\"",
+    "prod": "set NODE_ENV=production&& node ./bin/www"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "@tensorflow/tfjs-node": "^2.6.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "core-util-is": "^1.0.2",
     "cors": "^2.8.5",

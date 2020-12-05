@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+const compression = require('compression')
+
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 require("dotenv").config();
@@ -13,6 +15,7 @@ const authRouter = require("./routes/auth");
 
 // DB connection
 const MONGODB_URL = process.env.MONGODB_URL;
+console.log(MONGODB_URL);
 const mongoose = require("mongoose");
 mongoose.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
 	//don't show the log when it is test
@@ -33,6 +36,7 @@ const app = express();
 if(process.env.NODE_ENV !== "test") {
 	app.use(logger("dev"));
 }
+app.use(compression())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false, limit: '1mb' }));
 app.use(cookieParser());
@@ -58,7 +62,8 @@ app.use((err, req, res) => {
 		return apiResponse.unauthorizedResponse(res, err.message);
 	}
 });
+// var port = process.env.PORT || serverPort;
 
-app.listen(3000);
+// app.listen(port);
 
 module.exports = app;
