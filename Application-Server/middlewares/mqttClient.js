@@ -2,8 +2,7 @@ const mqtt = require("mqtt");
 const sensorModel = require("../models/sensorModel");
 const imageModel = require("../models/imageModel");
 
-var mqttClient = mqtt.connect('ws://localhost:9001');
-var xPrev, yPrev, zPrev;
+var mqttClient = mqtt.connect('ws://broker.hivemq.com:8000');
 var isEnabled = true;
 mqttClient.on('connect', function () {
     // subscribing to topic to get the coordinates

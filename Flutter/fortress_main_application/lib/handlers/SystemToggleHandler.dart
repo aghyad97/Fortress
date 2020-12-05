@@ -8,7 +8,7 @@ class SystemToggleHandler {
   Response response;
 
   final BaseOptions options = new BaseOptions(
-    baseUrl: "http://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
+    baseUrl: "https://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
     connectTimeout: 5000,
     receiveTimeout: 5000,
   );

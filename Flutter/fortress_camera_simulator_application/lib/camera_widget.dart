@@ -17,9 +17,10 @@ class CameraWidget extends StatelessWidget {
   var isReady = 0.obs;
   var nSentImages = 0;
   var isTransmitting = false.obs;
-  final String serverEndPoint = 'http://192.168.0.119:3000/api/image';
+  final String serverEndPoint =
+      'https://fortress-safe-system.herokuapp.com/api/image';
   MqttServerClient mqttClient =
-      MqttServerClient('192.168.0.119', 'camera_app'); // port 1883
+      MqttServerClient('broker.hivemq.com', 'camera_app'); // port 1883
 
   CameraWidget() {
     _loadModelAndMqttConnect();
