@@ -7,30 +7,60 @@ $(function () {
       url: '/register',
       success: function (data) {
         console.log('success');
+        $('#fullNameHelp').text('');
+        $('#passwordHelp').text('');
+        $('#emailHelp').text('');
         console.log(JSON.stringify(data));
+        $('#alert').text('Congratulations, your account has been successfully created. Redirecting to login...').css('visibility', 'visible').delay(5000);
+        window.setTimeout(function() { window.location.replace("/login") }, 3000);
       },
       error: function (jqXHR, exception) {
-        var msg = '';
+        var msg;
         if (jqXHR.status === 0) {
-          msg = 'Not connect.\n Verify Network.';
+          msg = jqXHR.responseJSON;
+          $('#fullNameHelp').text(msg);
+          $('#emailHelp').text(msg);
+          $('#passwordHelp').text(msg);
         } else if (jqXHR.status == 400) {
-          msg = 'Requested page not found. [400]' + jqXHR.responseText;
+          msg = jqXHR.responseJSON;
+          console.log(msg);
+          console.log($.trim($('#fullName').val()));
+          console.log($.trim($('#email').val()));
+          if ($.trim($('#email').val()) != '') {
+            console.log('212121');
+            $('#emailHelp').text(msg['data'][0]['msg']);
+          } else if ($.trim($('#fullName').val()) == '' && $.trim($('#email').val()) != '' && $.trim($('#password').val()) != '') {
+            $('#fullNameHelp').text(msg['data'][0]['msg']);
+            $('#emailHelp').text('');
+            $('#passwordHelp').text('');
+          } else if ($.trim($('#fullName').val()) != '' && $.trim($('#email').val()) == '' && $.trim($('#password').val()) != '') {
+            $('#fullNameHelp').text('');
+            $('#emailHelp').text(msg['data'][0]['msg']);
+            $('#passwordHelp').text('');
+          } else if ($.trim($('#fullName').val()) != '' && $.trim($('#email').val()) != '' && $.trim($('#password').val()) == '') {
+            $('#fullNameHelp').text('');
+            $('#emailHelp').text('');
+            $('#passwordHelp').text(msg['data'][0]['msg']);
+          } else {
+            $('#fullNameHelp').text(msg['data'][0]['msg']);
+            $('#emailHelp').text(msg['data'][2]['msg']);
+            $('#passwordHelp').text(msg['data'][3]['msg']);
+          }
         } else if (jqXHR.status == 401) {
-          msg = 'Requested page not found. [401]' + jqXHR.responseText;
+          msg = jqXHR.responseJSON;
         } else if (jqXHR.status == 404) {
-          msg = 'Requested page not found. [404]' +jqXHR.responseText;
+          msg = jqXHR.responseJSON;
         } else if (jqXHR.status == 500) {
-          msg = 'Internal Server Error [500].' +jqXHR.responseText;
+          msg = jqXHR.responseJSON;
         } else if (exception === 'parsererror') {
-          msg = 'Requested JSON parse failed.' +jqXHR.responseText;
+          msg = jqXHR.responseJSON;
         } else if (exception === 'timeout') {
-          msg = 'Time out error.' +jqXHR.responseText;
+          msg = jqXHR.responseJSON;
         } else if (exception === 'abort') {
-          msg = 'Ajax request aborted.' +jqXHR.responseText;
+          msg = jqXHR.responseJSON;
         } else {
-          msg = 'Uncaught Error.\n' + jqXHR.responseText;
+          msg = jqXHR.responseJSON;
         }
-        console.log(msg);
       },
     });
   });

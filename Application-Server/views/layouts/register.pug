@@ -1,21 +1,24 @@
 extends ../layout
 
 block content
-    .col-lg-4.col-md-4.col-sm-4.container.justify-content-center
-        h1.mx-auto #{title}
-        form(id="register")
-            .form-group
-                label(for='name') Your full Name
-                input#name.form-control(type='fullName' aria-describedby='nameHelp' placeholder='Enter Your Full Name' name='fullName')
-                small#emailHelp.form-text.text-muted
-            .form-group
-                label(for='email') Email address
-                input#email.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter email' name='email')
-                small#emailHelp.form-text.text-muted
-            .form-group
-                label(for='password') Password
-                input#password.form-control(type='password' placeholder='Password' name='password')
-            button.btn.btn-success(type='submit' id="registerButton") Register
-    
+    .background
+        .col-lg-4.col-md-4.col-sm-4.container.justify-content-center
+            .alert.alert-success(role='alert' id='alert')
+            h1.text-center  #{title}
+            form(id="register")
+                .form-group
+                    label(for='name') Your full Name
+                    input#fullName.form-control(type='fullName' aria-describedby='nameHelp' placeholder='Enter Your Full Name' name='fullName')
+                    small#fullNameHelp.text-danger
+                .form-group
+                    label(for='email') Email address
+                    input#email.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter email' name='email')
+                    small#emailHelp.text-danger
+                .form-group
+                    label(for='password') Password
+                    input#password.form-control(type='password' placeholder='Password' name='password')
+                    small#passwordHelp.text-danger
+                button.btn.btn-success(type='submit' id="registerButton") Register
+        
     script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous')
     script(src="static/js/register.js")
