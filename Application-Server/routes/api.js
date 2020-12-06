@@ -26,7 +26,7 @@ router.post('/togglesystem', function(req, res) {
 
 router.get('/getimages', function(req, res) {
     try {
-        jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
+        jwt.verify(req.headers.authorization  || req.cookies.userToken, process.env.JWT_SECRET);
     } catch (error) {
         console.log('invalid token found ' + req.headers.authorization);
         return apiResponse.unauthorizedResponse(res, 'Invalid token.');

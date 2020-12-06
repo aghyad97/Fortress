@@ -5,6 +5,7 @@ block content
   link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/demo/demo.min.css')
   link(rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
   link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
+  link(rel='stylesheet' href='  https://cdn.jsdelivr.net/npm/@splidejs/splide@2.4.21/dist/css/splide.min.css')
   .content
     .container-fluid
       .row
@@ -52,10 +53,19 @@ block content
             .card-header.card-header-success
               h4.card-title Pictures From Camera
               p.card-category These pictures are updated every 15 seconds
+                input#picturesTime.form-control(type='text' placeholder='Number of minutes' name="limit")
+                button.btn.btn-dark(type='submit' id="getImages") Get images
             .card-body.table-responsive
               table.table.table-hover
                 thead.text-warning
-                
+                  .splide
+                    .splide__track
+                      ul.splide__list
+
+
+
+
+  script(src='https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js')
   script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous') 
   script(src="/static/js/dashboard.js")
 

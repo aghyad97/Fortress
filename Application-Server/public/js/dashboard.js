@@ -29,25 +29,39 @@ $(function () {
 
 
   // pictures of the camera
-  // window.setInterval(function () {
-  //   $.ajax({
-  //     type: 'GET',
-  //     data: $('#').val(),
-  //     url: '/api/getimages',
-  //     success: function (data) {
-  //       console.log('success');
-  //     },
-  //   });
-  // }, 15000);
+  $("#getImages").click(function () {
+    console.log($('#picturesTime').val());
+    if(!isNaN(parseInt($('#picturesTime').val()))){
+      $.ajax({
+        type: 'GET',
+        url: '/api/getimages?limit=' +  parseInt($('#picturesTime').val()),
+        success: function (data) {
+          console.log();
+          let json = JSON.parse(data['data']);
+          new Splide( '.splide' ).mount();
+          for ( var i = 0, len = json.length; i < len; i++ ) {
+            $('.splide__list').append('<li class="splide__slide"><div class="splide__slide__container"><img src="data:image/png;base64, ' + json[i]['image'] + '"/></div></li>')
+          }
+        },
+      });
+    } else {
+      alert('Please enter a valid number');
+    }
+  });
+
 
   // predicted images
   // window.setInterval(function () {
   //   $.ajax({
   //     type: 'GET',
-  //     data: $('#').val(),
-  //     url: '/api/getimages',
+  //     url: '/api/getimages?limit=' +  parseInt($('#picturesTime').val()),
   //     success: function (data) {
-  //       console.log('success');
+  //       console.log();
+  //       let json = JSON.parse(data['data']);
+  //       new Splide( '.splide' ).mount();
+  //       for ( var i = 0, len = json.length; i < len; i++ ) {
+  //         $('.splide__list').append('<li class="splide__slide"><div class="splide__slide__container"><img src="data:image/png;base64, ' + json[i]['image'] + '"/></div></li>')
+  //       }
   //     },
   //   });
   // }, 5000);
