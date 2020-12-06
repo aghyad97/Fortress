@@ -6,13 +6,13 @@ const apiResponse = require("../helpers/apiResponse");
 router.get("/dashboard", function (req, res) {
 	try {
 		
-		// console.log(req.headers.authorization);
-		// jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
+		console.log(req.headers.authorization);
+		jwt.verify(req.cookies.userToken, process.env.JWT_SECRET);
+
 		return res.render('layouts/dashboard', {
 			authorized: true,
-			name: "Aghyad",
-			title: "Dashboard - Fortress" ,
-
+			name: req.cookies.fullName,
+			title: "Dashboard - Fortress",
 		});
 	} catch (error) {
 		console.log('invalid token found ' + req.headers.authorization);

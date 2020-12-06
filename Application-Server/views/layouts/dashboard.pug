@@ -1,10 +1,10 @@
 extends ../layout
 
 block content
+  link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/css/material-dashboard.min.css')
+  link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/demo/demo.min.css')
   link(rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
   link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
-  link(href='/static/css/material-dashboard.css' rel='stylesheet')
-  link(href='/static/css/demo.css' rel='stylesheet')
   .content
     .container-fluid
       .row
@@ -37,12 +37,24 @@ block content
             .card-footer
               .stats
                 |  All Good
-        .col-lg-12.col-md-12
+        .col-lg-6.col-md-6
           .card
             .card-header.card-header-warning
+              h4.card-title Predicted Images
+              p.card-category These pictures are updated every time there is someone near the safe
+            .card-body.table-responsive
+              table.table.table-hover
+                thead.text-warning
+        .col-lg-6.col-md-6
+          .card
+            .card-header.card-header-success
               h4.card-title Pictures From Camera
               p.card-category These pictures are updated every 15 seconds
             .card-body.table-responsive
               table.table.table-hover
                 thead.text-warning
+
+  script(src="https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/demo/demo.min.js")
+  script(src="https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/js/material-dashboard.min.js")
+
 
