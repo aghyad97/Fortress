@@ -33,10 +33,12 @@ block content
             .card-header.card-header-danger
             .card-body
               h4.card-title System Status
-              p.card-category You can turn on/off
-            .card-footer
-              .stats
-                |  All Good
+              p.card-category
+                p.ma-2(style='float: left; margin: 5px;') OFF
+                label.switch(style='float: left;')
+                  input(type='checkbox' id="system-toggle")
+                  span.slider.round
+                p(style='float: left;margin: 5px;') ON
         .col-lg-6.col-md-6
           .card
             .card-header.card-header-warning
@@ -53,8 +55,8 @@ block content
             .card-body.table-responsive
               table.table.table-hover
                 thead.text-warning
-
-  script(src="https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/demo/demo.min.js")
-  script(src="https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/js/material-dashboard.min.js")
+                
+  script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous') 
+  script(src="/static/js/dashboard.js")
 
 
