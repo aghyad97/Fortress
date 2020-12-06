@@ -52,6 +52,7 @@ class HomePage extends StatelessWidget {
               highlightColor: Colors.purple[900],
               onPressed: () {
                 LoginHandler.logOut();
+                notificationHandler.logOut();
                 Get.offAll(WelcomePage(fortressAssetImage: fortressAssetImage));
               })
         ],
