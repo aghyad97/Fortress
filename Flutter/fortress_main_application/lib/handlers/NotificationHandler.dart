@@ -55,11 +55,13 @@ class NotificationHandler {
             showWhen: false);
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        'Person Detected!',
-        'A person was detected on ${foundTimeString}!',
-        platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(0, 'Person Detected!',
+        'A person was detected on $foundTimeString!', platformChannelSpecifics);
+  }
+
+  void logOut() {
+    // disconnects the mqtt client, needed for when the user logs out
+    mqttClient.disconnect();
   }
 
   Future<void> _connectAndSubscribe() async {

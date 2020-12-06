@@ -9,8 +9,8 @@ class LoginHandler {
 
   BaseOptions options = new BaseOptions(
     baseUrl: "https://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
-    connectTimeout: 5000,
-    receiveTimeout: 5000,
+    connectTimeout: 15000,
+    receiveTimeout: 15000,
     contentType: Headers.formUrlEncodedContentType,
   );
 
@@ -35,7 +35,8 @@ class LoginHandler {
       if (e.response == null) {
         return {
           'status': '-1',
-          'message': 'Please connect to the internet.',
+          'message':
+              'Something went wrong. Please make sure you are connected to the internet.',
         };
       }
       if (e.response.statusCode == 401 || e.response.statusCode == 400) {
