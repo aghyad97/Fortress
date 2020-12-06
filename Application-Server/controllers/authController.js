@@ -266,6 +266,7 @@ exports.logout = [
 		try {
 			res.cookie('userToken', null);
 			res.cookie('fullName', null);
+			
 			return apiResponse.successResponse(res, "Logout Success.");
 		} catch (error) {
 			return apiResponse.ErrorResponse(res, err);
