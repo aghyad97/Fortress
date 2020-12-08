@@ -13,6 +13,11 @@ The directory contains files related to the person detection of our system to de
 ### Node-Red
 This directory includes sensors flow services such as an accelerometer that can be placed on the safe to detect if someone is moving the safe itself. Also it has proximity sensor which can publish messages if there is someone near the safe.
 
+# Deployment
+
+This project has the website front-end deployed on Heroku and can be accessed here [Fortress Website](https://fortress-safe-system.herokuapp.com/).
+For Flutter apps, APKs files can be found in the Flutter directory.
+
 # TODO
 
 ### Todo
