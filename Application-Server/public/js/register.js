@@ -1,5 +1,7 @@
 $(function () {
   $('#registerButton').click(function (e) {
+    $('#registerButton').addClass('disabled');
+    $('#registerButton').attr('disabled', true);
     e.preventDefault();
     $.ajax({
       type: 'post',
@@ -62,6 +64,10 @@ $(function () {
           msg = jqXHR.responseJSON;
         }
       },
+      complete: function (jqXHR, textStatus) {
+        $('#registerButton').removeClass('disabled');
+        $('#registerButton').attr('disabled', false);
+      }
     });
   });
 });

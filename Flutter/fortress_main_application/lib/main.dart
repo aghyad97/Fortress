@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
         accentColor: Colors.purple[900],
-        fontFamily: 'Changa',
+        // fontFamily: 'Changa',
       ),
     );
   }

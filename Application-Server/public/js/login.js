@@ -1,5 +1,7 @@
 $(function () {
   $('#loginButton').click(function (e) {
+    $('#loginButton').addClass('disabled');
+    $('#loginButton').attr('disabled', true);
     e.preventDefault();
     $.ajax({
       type: 'POST',
@@ -44,6 +46,10 @@ $(function () {
           msg = jqXHR.responseJSON;
         }
       },
+      complete: function (jqXHR, textStatus) {
+        $('#loginButton').removeClass('disabled');
+        $('#loginButton').attr('disabled', false);
+      }
     });
   });
 });
