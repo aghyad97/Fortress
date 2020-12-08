@@ -18,7 +18,18 @@ var options = {
 
 $(function () {
   client.connect(options);
-
+  $.ajax({
+    type: 'GET',
+    url: '/api/getimages',
+    success: function (data) {
+      console.log();
+      let json = JSON.parse(data['data']);
+      for ( var i = 0, len = json.length; i < len; i++ ) {
+        $('.splide__list').append('<li class="splide__slide text-center"><div class="splide__slide__container"><img src="data:image/png;base64, ' + json[i]['image'] + '"/></div></li>')
+      }
+      splide.refresh();
+    },
+  });
   client.onMessageArrived = function (message) {
     console.log(message);
     var json = JSON.parse(message.payloadString);
@@ -53,20 +64,25 @@ $(function () {
       },
     });
   });
-
   // pictures of the camera
+  var splide = new Splide( '.splide' , {
+    type        : 'loop',
+    autoplay    : true,
+  }).mount();
   $("#getImages").click(function () {
     console.log($('#picturesTime').val());
-    if(!isNaN(parseInt($('#picturesTime').val()))){
+    //$( ".splide__list" ).empty();
+    if(!isNaN(parseInt($('#picturesTime').val()))){       
+      $( ".splide__list" ).empty();
       $.ajax({
         type: 'GET',
         url: '/api/getimages?limit=' +  parseInt($('#picturesTime').val()),
         success: function (data) {
-          new Splide( '.splide' ).mount();
           let json = JSON.parse(data['data']);
           for ( var i = 0, len = json.length; i < len; i++ ) {
-            $('.splide__list').append('<li class="splide__slide"><div class="splide__slide__container"><img src="data:image/png;base64, ' + json[i]['image'] + '"/></div></li>')
+            $('.splide__list').append('<li class="splide__slide text-center"><div class="splide__slide__container"><img src="data:image/png;base64, ' + json[i]['image'] + '"/></div></li>')
           }
+          splide.refresh();
         },
       });
     } else {
@@ -76,19 +92,20 @@ $(function () {
 
 
   // predicted images
-  // window.setInterval(function () {
-  //   $.ajax({
-  //     type: 'GET',
-  //     url: '/api/getimages?limit=' +  parseInt($('#picturesTime').val()),
-  //     success: function (data) {
-  //       console.log();
-  //       let json = JSON.parse(data['data']);
-  //       new Splide( '.splide' ).mount();
-  //       for ( var i = 0, len = json.length; i < len; i++ ) {
-  //         $('.splide__list').append('<li class="splide__slide"><div class="splide__slide__container"><img src="data:image/png;base64, ' + json[i]['image'] + '"/></div></li>')
-  //       }
-  //     },
-  //   });
-  // }, 5000);
+  window.setInterval(function () {
+    $( ".splide__list" ).empty();
+    $.ajax({
+      type: 'GET',
+      url: '/api/getimages',
+      success: function (data) {
+        console.log();
+        let json = JSON.parse(data['data']);
+        for ( var i = 0, len = json.length; i < len; i++ ) {
+          $('.splide__list').append('<li class="splide__slide text-center"><div class="splide__slide__container"><img src="data:image/png;base64, ' + json[i]['image'] + '"/></div></li>')
+        }
+        splide.refresh();
+      },
+    });
+  }, 5000);
 
 });
