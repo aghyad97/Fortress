@@ -11,17 +11,6 @@ block content
       .row
         .col-md-4
           .card.card-chart
-            .card-header.card-header-success
-            .card-body
-              h4.card-title Sensors Data
-              p.card-category
-                span.text-success
-                  |  
-            .card-footer
-              .stats
-                |  updated
-        .col-md-4
-          .card.card-chart
             .card-header.card-header-warning
             .card-body
               h4.card-title Notifications
@@ -40,7 +29,7 @@ block content
                   input(type='checkbox' id="system-toggle")
                   span.slider.round
                 p(style='float: left;margin: 5px;') ON
-        .col-lg-6.col-md-6
+        .col-lg-4.col-md-4
           .card
             .card-header.card-header-warning
               h4.card-title Predicted Images
@@ -48,6 +37,9 @@ block content
             .card-body.table-responsive
               table.table.table-hover
                 thead.text-warning
+                  .splide1
+                    .splide__track1
+                      ul.splide__list1
         .col-lg-6.col-md-6
           .card
             .card-header.card-header-success
@@ -61,10 +53,22 @@ block content
                   .splide
                     .splide__track
                       ul.splide__list
+        .col-lg-6.col-md-6
+          .card.card-chart
+            .card-header.card-header-success
+            .card-body
+              h4.card-title Sensors Data
+                input#sensorData.form-control(type='text' placeholder='Number of minutes' name="sensorData")
+                button.btn.btn-dark(type='submit' id="getSensorData") Get Sensor Data
+              p.card-category
+                span.text-success
+                  canvas#sensorData(width='400' height='400')
+            .card-footer
+              .stats
+                |  updated
 
-
-
-
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js")
+  script(src='https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js')
   script(src='https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js')
   script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous') 
   script(src="/static/js/dashboard.js")
