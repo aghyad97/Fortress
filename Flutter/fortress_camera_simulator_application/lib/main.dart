@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
         title: 'Safe Camera Simulator',
         home: CameraWidget(),
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.purple[900],
           accentColor: Colors.purple[100],

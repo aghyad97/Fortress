@@ -134,7 +134,11 @@ class CameraWidget extends StatelessWidget {
       if (available.value) {
         // makes sure only 1 predict will go in the span of 2 seconds
         available.toggle(); // set false to lock the function
-        print('found prediction!!!!');
+        Get.snackbar(
+          'Found person!',
+          'Publishing to subscribers...',
+          backgroundColor: Colors.grey[400],
+        );
         _publishImage(img, 'project/images', true);
         await Future.delayed(const Duration(seconds: 5), () => "5");
         available.toggle();
