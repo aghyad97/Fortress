@@ -16,7 +16,9 @@ router.get("/dashboard", function (req, res) {
 		});
 	} catch (error) {
 		console.log('invalid token found ' + req.headers.authorization);
-		return apiResponse.unauthorizedResponse(res, 'Invalid token.');
+		return res.render('error', {
+			error: 'Not authorized to access the dashboard, Please login'
+		})
 	}
 });
 

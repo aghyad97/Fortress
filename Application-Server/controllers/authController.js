@@ -134,7 +134,7 @@ exports.login = [
 										const secret = process.env.JWT_SECRET;
 										//Generated JWT token with Payload and secret.
 										userData.token = jwt.sign(jwtPayload, secret, jwtData);
-										res.cookie('userToken', userData.token, {maxAge: 120000, httpOnly: true});
+										res.cookie('userToken', userData.token, {maxAge: 360000, httpOnly: true});
 										return apiResponse.successResponseWithData(res, "Login Success.", userData);
 									} else {
 										return apiResponse.unauthorizedResponse(res, "Account is not active. Please contact us");

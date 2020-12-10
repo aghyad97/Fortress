@@ -15,9 +15,8 @@ block content
             .card-body
               h4.card-title Notifications
               p.card-category Last Notifications
-            .card-footer
-              .stats
-                |  
+                .notifcationsMessages
+                
         .col-md-4
           .card.card-chart
             .card-header.card-header-danger
@@ -56,13 +55,22 @@ block content
         .col-lg-6.col-md-6
           .card.card-chart
             .card-header.card-header-success
-            .card-body
               h4.card-title Sensors Data
-                input#sensorData.form-control(type='text' placeholder='Number of minutes' name="sensorData")
-                button.btn.btn-dark(type='submit' id="getSensorData") Get Sensor Data
+              p.card-category To get sensors data in minutes
+            .card-body
+              input#sensorData.form-control(type='text' placeholder='Number of minutes' name="sensorData")
+              input#sensorDataType.m-2(type='radio' name='sensorDataType' value='x')
+              label(for='x') x
+              input#sensorDataType.m-2(type='radio' name='sensorDataType' value='y')
+              label(for='y') y
+              input#sensorDataType.m-2(type='radio' name='sensorDataType' value='z')
+              label(for='z') z
+              input#sensorDataType.m-2(type='radio' name='sensorDataType' value='proximity')
+              label(for='proximity') proximity
+              button.btn.btn-dark(type='submit' id="getSensorData") Get Sensor Data
               p.card-category
                 span.text-success
-                  canvas#sensorData(width='400' height='400')
+                  canvas#sensorDataCanvas(width='400' height='400')
             .card-footer
               .stats
                 |  updated
