@@ -9,6 +9,8 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:tflite/tflite.dart';
 
 class CameraWidget extends StatelessWidget {
+  String email;
+  String jwt;
   CameraController _controller;
   List<CameraDescription> cameras; // list of camers
   CameraDescription selectedCamera; // currently selected camera
@@ -22,7 +24,7 @@ class CameraWidget extends StatelessWidget {
   MqttServerClient mqttClient =
       MqttServerClient('broker.hivemq.com', 'camera_app'); // port 1883
 
-  CameraWidget() {
+  CameraWidget(this.email, this.jwt) {
     _loadModelAndMqttConnect();
   }
   Future<void> _loadModelAndMqttConnect() async {
@@ -149,8 +151,8 @@ class CameraWidget extends StatelessWidget {
 
   _publishImage(CameraImage img, String topic, bool prediction) async {
     final base64image = await convertImagetoPng(img);
-    final String stringToPublish =
-        json.encode({'image': base64image, 'isPredict': prediction});
+    final String stringToPublish = json.encode(
+        {'image': base64image, 'isPredict': prediction, 'email': email});
     final publishBuilder = MqttClientPayloadBuilder();
     publishBuilder.addString(stringToPublish);
     mqttClient.publishMessage(
