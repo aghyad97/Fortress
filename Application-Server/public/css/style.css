@@ -1,4 +1,7 @@
+.main-background.container {
 
+  background-image: url('https://app.vysor.io/img/background.jpg');
+}
 #alert {
   visibility: hidden;
 }

@@ -12,16 +12,17 @@ block content
         .col-md-4
           .card.card-chart
             .card-header.card-header-warning
-            .card-body
               h4.card-title Notifications
               p.card-category Last Notifications
+            .card-body
                 .notifcationsMessages
                 
         .col-md-4
           .card.card-chart
             .card-header.card-header-danger
-            .card-body
               h4.card-title System Status
+              p.card-category You can turn on or off the system using this switch
+            .card-body
               p.card-category
                 p.ma-2(style='float: left; margin: 5px;') OFF
                 label.switch(style='float: left;')
@@ -44,7 +45,8 @@ block content
             .card-header.card-header-success
               h4.card-title Pictures From Camera
               p.card-category These pictures are updated every 15 seconds
-                input#picturesTime.form-control(type='text' placeholder='Number of minutes' name="limit")
+                p Please enter number of minutes
+                input#picturesTime.form-control(type='text' name="limit")
                 button.btn.btn-dark(type='submit' id="getImages") Get images
             .card-body.table-responsive
               table.table.table-hover
@@ -59,6 +61,8 @@ block content
               p.card-category To get sensors data in minutes
             .card-body
               input#sensorData.form-control(type='text' placeholder='Number of minutes' name="sensorData")
+              input#sensorDataType.m-2(type='radio' name='sensorDataType' value='all')
+              label(for='all') all
               input#sensorDataType.m-2(type='radio' name='sensorDataType' value='x')
               label(for='x') x
               input#sensorDataType.m-2(type='radio' name='sensorDataType' value='y')
@@ -69,8 +73,7 @@ block content
               label(for='proximity') proximity
               button.btn.btn-dark(type='submit' id="getSensorData") Get Sensor Data
               p.card-category
-                span.text-success
-                  canvas#sensorDataCanvas(width='400' height='400')
+                #sensorDataCanvas
             .card-footer
               .stats
                 |  updated
@@ -79,6 +82,7 @@ block content
   script(src='https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js')
   script(src='https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js')
   script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous') 
+  script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
   script(src="/static/js/dashboard.js")
 
 

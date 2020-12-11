@@ -12,7 +12,7 @@ html(lang='en')
         link(rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
         link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
     body
-        nav.navbar.navbar-expand-lg.navbar-light.bg-light
+        nav.navbar.navbar-expand-lg.navbar-light.bg-light.shadow.p-3.mb-5.bg-white.rounded
             a.navbar-brand(href='/')
                 img.d-inline-block.align-top(src='/static/icons/code.svg' width='30' height='30' alt='')
                 |     Fortress
@@ -38,11 +38,12 @@ html(lang='en')
                         p.m-sm-3 #{name}
                         a.btn.btn-outline-danger.mr-sm-2(id="logoutButton") Logout
                     else
-                        a.btn.btn-outline-dark.mr-sm-2(href='login') Login
-                        a.btn.btn-outline-success.my-2.my-sm-0(href='register') Register
+                        a.btn.btn-outline-dark.mr-sm-2.rounded-0(href='login') Login
+                        a.btn.btn-outline-success.my-2.my-sm-0.rounded-0(href='register') Register
+        
         block content
             p This page doesn't have any content yet.
-    
+
         
         script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous')
 
