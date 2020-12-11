@@ -1,7 +1,6 @@
 var wsbroker = "broker.hivemq.com"; //mqtt websocket enabled broker
-var wsport = 443 // port for above
+var wsport = 8000 // port for above
 google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
 // create client using the Paho library
 var client = new Paho.MQTT.Client(wsbroker, wsport, "clientId");
 var options = {
@@ -11,10 +10,13 @@ var options = {
     client.subscribe("project/images", {
       qos: 1
     });
+    client.subscribe("project/foundperson", {
+      qos: 1
+    });
   },
   onFailure: function (message) {
     console.log("Connection failed: " + message.errorMessage);
-  }
+  },
 };
 
 function drawChart(data) {
@@ -32,6 +34,7 @@ function drawChart(data) {
 }
 
 $(function () {
+
   client.connect(options);
   $.ajax({
     type: 'GET',
@@ -48,9 +51,13 @@ $(function () {
 
   client.onMessageArrived = function (message) {
     console.log(message);
-    $('.notifcationsMessages').append('<p>Found person at ' + message + '</p>');
+    if(message.destinationName == "project/images"){
+      $('.predictedImage').append('<img src="data:image/png;base64, ' + JSON.parse(message.payloadString)['image'] + '"/>');
+    } else if(message.destinationName == "project/foundperson"){
+      $('.notifcationsMessages').append('<p>Found person at ' + Date(Number(message.payloadString)) + '</p>');
+    }
   };
-  // toggle system
+  // toggle systemdestinationName == 
   $("#system-toggle").click(function () {
     $.ajax({
       type: 'POST',
@@ -58,11 +65,11 @@ $(function () {
       url: '/api/togglesystem',
       success: function (data) {
         console.log('success');
-        if ($('#system-toggle').is(":checked")) {
-          alert('System is ON');
-        } else {
-          alert('System is OFF');
-        }
+        // if ($('#system-toggle').is(":checked")) {
+        //   alert('System is ON');
+        // } else {
+        //   alert('System is OFF');
+        // }
       },
     });
   });
@@ -108,7 +115,9 @@ $(function () {
         splide.refresh();
       },
     });
-  }, 5000);
+  }, 15000);
+
+  
 
 
   $("#getSensorData").click(function () {
