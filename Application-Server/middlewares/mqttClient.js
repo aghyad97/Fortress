@@ -45,6 +45,7 @@ mqttClient.on('message', function (topic, message) {
             // Publishes message to be read by the main app so it can display notification
             mqttClient.publish('project/foundperson', Date.now().toString());
             // Sends a request to node-red to send an email to the user, warning them that a person was found
+            httpRequestOptions.path = '/sendemail?email=' + sensorInfo.email;
             http.request(httpRequestOptions).end();
         }
         const sensorDocument = new sensorModel({
@@ -66,6 +67,7 @@ mqttClient.on('message', function (topic, message) {
             console.log('found person!')
             // Publishes message to be read by the main app so it can display notification
             mqttClient.publish('project/foundperson', Date.now().toString());
+            httpRequestOptions.path = '/sendemail?email=' + imageInfo.email;
             http.request(httpRequestOptions).end();
         }
         const imageDocument = new imageModel(imageInfo);
