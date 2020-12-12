@@ -33,8 +33,13 @@ function drawChart(data) {
   chart.draw(data, options);
 }
 
-$(function () {
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
+$(function () {
   client.connect(options);
   $.ajax({
     type: 'GET',
@@ -52,7 +57,16 @@ $(function () {
   client.onMessageArrived = function (message) {
     console.log(message);
     if(message.destinationName == "project/images"){
-      $('.predictedImage').append('<img src="data:image/png;base64, ' + JSON.parse(message.payloadString)['image'] + '"/>');
+      var data = JSON.parse(message.payloadString);
+      let isPredict = data['isPredict'];
+      console.log(isPredict);
+      let email = data['email'];
+      console.log(email);
+      let cookieEmail = getCookie(email);
+      console.log(cookieEmail);
+      if(isPredict && email === cookieEmail){
+        $('.predictedImage').append('<img src="data:image/png;base64, ' + data['image'] + '"/>');
+      } 
     } else if(message.destinationName == "project/foundperson"){
       $('.notifcationsMessages').append('<p>Found person at ' + Date(Number(message.payloadString)) + '</p>');
     }

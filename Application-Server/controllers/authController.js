@@ -125,7 +125,7 @@ exports.login = [
 											fullName: user.fullName,
 											email: user.email,
 										};
-										res.cookie('fullName', userData.fullName, {maxAge: 90000});
+										res.cookie('fullName', userData.fullName, {maxAge: 24 * 60 * 60 * 1000 * 30});
 										//Prepare JWT token for authentication
 										const jwtPayload = userData;
 										const jwtData = {
@@ -135,6 +135,7 @@ exports.login = [
 										//Generated JWT token with Payload and secret.
 										userData.token = jwt.sign(jwtPayload, secret, jwtData);
 										res.cookie('userToken', userData.token, {maxAge: 24 * 60 * 60 * 1000 * 30 , httpOnly: true});// 24 hours * 30 = 30 days,
+										res.cookie('email', userData.email, {maxAge: 24 * 60 * 60 * 1000 * 30});// 24 hours * 30 = 30 days,
 										return apiResponse.successResponseWithData(res, "Login Success.", userData);
 									} else {
 										return apiResponse.unauthorizedResponse(res, "Account is not active. Please contact us");
