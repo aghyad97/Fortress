@@ -1,6 +1,8 @@
 var wsbroker = "broker.hivemq.com"; //mqtt websocket enabled broker
 var wsport = 8000 // port for above
-google.charts.load('current', {'packages':['corechart']});
+google.charts.load('current', {
+  'packages': ['corechart']
+});
 // create client using the Paho library
 var client = new Paho.MQTT.Client(wsbroker, wsport, "clientId");
 var options = {
@@ -25,7 +27,9 @@ function drawChart(data) {
   var options = {
     title: 'Values are with respect to time',
     curveType: 'function',
-    legend: { position: 'bottom' }
+    legend: {
+      position: 'bottom'
+    }
   };
 
   var chart = new google.visualization.LineChart(document.getElementById('sensorDataCanvas'));
@@ -54,9 +58,20 @@ $(function () {
     },
   });
 
+  $.ajax({
+    type: 'GET',
+    url: '/api/getimages?isPredict=true&limit=1',
+    success: function (data) {
+      console.log();
+      let json = JSON.parse(data['data']);
+      console.log(json[0]['image']);
+      $('.predictedImage').append('<img class="col-lg-12 col-12" src="data:image/png;base64, ' + json[0]['image'] + '"/>');
+    },
+  });
+
   client.onMessageArrived = function (message) {
     console.log(message);
-    if(message.destinationName == "project/images"){
+    if (message.destinationName == "project/images") {
       var data = JSON.parse(message.payloadString);
       let isPredict = data['isPredict'];
       console.log(isPredict);
@@ -64,10 +79,11 @@ $(function () {
       console.log(email);
       let cookieEmail = getCookie(email);
       console.log(cookieEmail);
-      if(isPredict && email === cookieEmail){
+      if (isPredict && email === cookieEmail) {
+        $('.predictedImage').empty();
         $('.predictedImage').append('<img src="data:image/png;base64, ' + data['image'] + '"/>');
-      } 
-    } else if(message.destinationName == "project/foundperson"){
+      }
+    } else if (message.destinationName == "project/foundperson") {
       $('.notifcationsMessages').append('<p>Found person at ' + Date(Number(message.payloadString)) + '</p>');
     }
   };
@@ -79,11 +95,13 @@ $(function () {
       url: '/api/togglesystem',
       success: function (data) {
         console.log('success');
-        // if ($('#system-toggle').is(":checked")) {
-        //   alert('System is ON');
-        // } else {
-        //   alert('System is OFF');
-        // }
+        if ($('#system-toggle').is(":checked")) {
+          $('#system-status').removeClass('card-header-danger');
+          $('#system-status').addClass('card-header-success');
+        } else {
+          $('#system-status').removeClass('card-header-success');
+          $('#system-status').addClass('card-header-danger');
+        }
       },
     });
   });
@@ -131,7 +149,7 @@ $(function () {
     });
   }, 15000);
 
-  
+
 
 
   $("#getSensorData").click(function () {
@@ -144,7 +162,7 @@ $(function () {
         success: function (values) {
           let valuesJson = JSON.parse(values.data);
           let array = new Array();
-          if(dataType == null || dataType === 'all'){
+          if (dataType == null || dataType === 'all') {
             let a = ['time', 'x', 'y', 'z', 'proximity'];
             array.push(a);
             for (let index = 0; index < valuesJson.length; index++) {
@@ -153,15 +171,21 @@ $(function () {
               const dataTypeZ = valuesJson[index]['z'];
               const dataTypeProximity = valuesJson[index]['proximity'];
               const dataTypeTime = valuesJson[index]['createdAt'];
-              // dict = {
-              //   x: Date.parse(dataTypeTime),
-              //   y: dataTypeValue
-              // }
-              a = [Date.parse(dataTypeTime), dataTypeX, dataTypeY, dataTypeZ, dataTypeProximity]
+              a = [dataTypeTime, dataTypeX, dataTypeY, dataTypeZ, dataTypeProximity]
+              array.push(a);
+            }
+          } else if (dataType === 'accelerometer') {
+            let a = ['time', 'x', 'y', 'z'];
+            array.push(a);
+            for (let index = 0; index < valuesJson.length; index++) {
+              const dataTypeX = valuesJson[index]['x'];
+              const dataTypeY = valuesJson[index]['y'];
+              const dataTypeZ = valuesJson[index]['z'];
+              const dataTypeTime = valuesJson[index]['createdAt'];
+              a = [dataTypeTime, dataTypeX, dataTypeY, dataTypeZ]
               array.push(a);
             }
           } else {
-            console.log('21212');
             let a = ['time', dataType];
             array.push(a);
 
@@ -172,7 +196,7 @@ $(function () {
               //   x: Date.parse(dataTypeTime),
               //   y: dataTypeValue
               // }
-              a = [Date.parse(dataTypeTime), dataTypeValue]
+              a = [dataTypeTime, dataTypeValue]
               array.push(a);
             }
           }
@@ -185,38 +209,3 @@ $(function () {
   });
 
 });
-
-// var ctx = $('#sensorDataCanvas');
-//           new Chart(ctx, {
-//             type: 'line',
-//             data: [
-//               {
-//                 x: Date.now(),
-//                 y: 1
-//               },{
-//                 x: Date.now(),
-//                 y: 2
-//               },{
-//                 x: Date.now(),
-//                 y: 3
-//               }
-//             ],
-//             options: {
-//               title: {
-//                 display: true,
-//                 text: dataType + ' values along with time axis'
-//               },
-//               scales: {
-//                 yAxes: [{
-//                   ticks: {
-//                     beginAtZero: true,
-//                   }
-//                 }],
-//                 xAxes: [{
-//                   ticks: {
-//                     beginAtZero: true,
-//                   }
-//                 }]
-//               }
-//             }
-//           });

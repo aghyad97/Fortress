@@ -2,6 +2,10 @@
 
   background-image: url('https://app.vysor.io/img/background.jpg');
 }
+
+.purple-card {
+  background: linear-gradient(256deg, rgba(96,24,168,1) 0%, rgba(106,41,171,1) 51%, rgba(155,60,250,1) 100%) !important;
+}
 #alert {
   visibility: hidden;
 }
@@ -43,11 +47,11 @@
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #56AE59;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #56AE59;
 }
 
 input:checked + .slider:before {

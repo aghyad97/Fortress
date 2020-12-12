@@ -6,12 +6,13 @@ block content
   link(rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
   link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
   link(rel='stylesheet' href='  https://cdn.jsdelivr.net/npm/@splidejs/splide@2.4.21/dist/css/splide.min.css')
+  link(rel='stylesheet' href='/static/css/style.css')
   .content
     .container-fluid
       .row
         .col-md-4
           .card.card-chart
-            .card-header.card-header-warning
+            .card-header.card-header-warning.purple-card
               h4.card-title Notifications
               p.card-category Last Notifications
             .card-body
@@ -19,19 +20,19 @@ block content
                 
         .col-md-4
           .card.card-chart
-            .card-header.card-header-danger
+            .card-header.card-header-danger(id='system-status')
               h4.card-title System Status
               p.card-category You can turn on or off the system using this switch
             .card-body
               p.card-category
                 p.ma-2(style='float: left; margin: 5px;') OFF
-                label.switch(style='float: left;')
+                label.switch(style='float: left;' id='toggle-system-status')
                   input(type='checkbox' id="system-toggle")
                   span.slider.round
                 p(style='float: left;margin: 5px;') ON
         .col-lg-4.col-md-4
           .card
-            .card-header.card-header-warning
+            .card-header.card-header-warning.purple-card
               h4.card-title Predicted Images
               p.card-category These pictures are updated every time there is someone near the safe
             .card-body.table-responsive
@@ -67,6 +68,8 @@ block content
               label(for='y') y
               input#sensorDataType.m-2(type='radio' name='sensorDataType' value='z')
               label(for='z') z
+              input#sensorDataType.m-2(type='radio' name='sensorDataType' value='accelerometer')
+              label(for='accelerometer') accelerometer
               input#sensorDataType.m-2(type='radio' name='sensorDataType' value='proximity')
               label(for='proximity') proximity
               button.btn.btn-dark(type='submit' id="getSensorData") Get Sensor Data
