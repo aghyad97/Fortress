@@ -137,8 +137,10 @@ class LoginPage extends StatelessWidget {
                                   handler.saveTime();
                                   handler.saveUserInfo(map['data']['email'],
                                       map['data']['token']);
-                                  Get.offAll(CameraWidget(map['data']['email'],
-                                      map['data']['token']));
+                                  Get.offAll(CameraWidget(
+                                      map['data']['email'],
+                                      map['data']['token'],
+                                      fortressAssetImage));
                                 } else {
                                   // 4xx error
                                   _errorMessage.value = map['message'];

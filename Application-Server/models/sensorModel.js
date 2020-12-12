@@ -7,6 +7,7 @@ var sensorSchema = new mongoose.Schema({
 	z: {type: Number, required: true},
   proximity: {type: Number, required: true},
   isPredict: {type: Boolean, required: false},
+  email: {type: String, required: false},
 }, {timestamps: true});
 
 

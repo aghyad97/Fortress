@@ -37,13 +37,14 @@ mqttClient.on('message', function (topic, message) {
             // Publishes message to be read by the main app so it can display notification
             mqttClient.publish('project/foundperson', Date.now().toString());
         }
-
+        console.log(sensorInfo);
         const sensorDocument = new sensorModel({
             x: sensorInfo.accelerometer.value[0],
             y: sensorInfo.accelerometer.value[1],
             z: sensorInfo.accelerometer.value[2],
             proximity: sensorInfo.proximity,
             isPredict: sensorInfo.isPredict,
+            email: sensorInfo.email,
         })
         sensorDocument.save(function (err, sensorDocument) {
             if (err) return console.error(err);
@@ -52,6 +53,7 @@ mqttClient.on('message', function (topic, message) {
     }
     else if (topic == 'project/images') {
         var imageInfo = JSON.parse(message.toString());
+        console.log(imageInfo);
         if (imageInfo.isPredict && isEnabled) {
             console.log('found person!')
             // Publishes message to be read by the main app so it can display notification

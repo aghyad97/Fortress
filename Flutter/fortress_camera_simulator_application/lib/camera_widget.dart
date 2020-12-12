@@ -8,9 +8,13 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:tflite/tflite.dart';
 
+import 'WelcomePage.dart';
+import 'handlers/LoginHandler.dart';
+
 class CameraWidget extends StatelessWidget {
   String email;
   String jwt;
+  AssetImage fortressAssetImage;
   CameraController _controller;
   List<CameraDescription> cameras; // list of camers
   CameraDescription selectedCamera; // currently selected camera
@@ -24,7 +28,7 @@ class CameraWidget extends StatelessWidget {
   MqttServerClient mqttClient =
       MqttServerClient('broker.hivemq.com', 'camera_app'); // port 1883
 
-  CameraWidget(this.email, this.jwt) {
+  CameraWidget(this.email, this.jwt, this.fortressAssetImage) {
     _loadModelAndMqttConnect();
   }
   Future<void> _loadModelAndMqttConnect() async {
@@ -228,6 +232,15 @@ class CameraWidget extends StatelessWidget {
         title: Text(
           'Security Camera Simulator',
         ),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout),
+              highlightColor: Colors.purple[900],
+              onPressed: () {
+                LoginHandler.logOut();
+                Get.offAll(WelcomePage(fortressAssetImage: fortressAssetImage));
+              })
+        ],
       ),
       body: Center(
         child: _cameraFutureBuilder,
