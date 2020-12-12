@@ -1,9 +1,17 @@
 const mqtt = require("mqtt");
 const sensorModel = require("../models/sensorModel");
 const imageModel = require("../models/imageModel");
-
+const http = require('http');
 var mqttClient = mqtt.connect('mqtt://broker.hivemq.com:1883');
 var isEnabled = true;
+var nodeRedHostname = 'localhost';
+var nodeRedPort = 1880;
+var httpRequestOptions = {
+    host: nodeRedHostname,
+    port: nodeRedPort,
+    path: '/sendemail'
+}
+
 mqttClient.on('connect', function () {
     // subscribing to topic to get the coordinates
     // Subscribes with QoS 0 (0 is default)
@@ -36,6 +44,8 @@ mqttClient.on('message', function (topic, message) {
             console.log('found person from sensors!')
             // Publishes message to be read by the main app so it can display notification
             mqttClient.publish('project/foundperson', Date.now().toString());
+            // Sends a request to node-red to send an email to the user, warning them that a person was found
+            http.request(httpRequestOptions).end();
         }
         const sensorDocument = new sensorModel({
             x: sensorInfo.accelerometer.value[0],
@@ -56,6 +66,7 @@ mqttClient.on('message', function (topic, message) {
             console.log('found person!')
             // Publishes message to be read by the main app so it can display notification
             mqttClient.publish('project/foundperson', Date.now().toString());
+            http.request(httpRequestOptions).end();
         }
         const imageDocument = new imageModel(imageInfo);
         imageDocument.save(function (err, imageDocument) {
