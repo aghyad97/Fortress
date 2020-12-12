@@ -23,7 +23,7 @@ class WelcomePage extends StatelessWidget {
       : fortressAssetImage = fortressAssetImage;
   @override
   Widget build(BuildContext context) {
-    Color _loginButtonColor = Theme.of(context).accentColor;
+    Color _loginButtonColor = Theme.of(context).primaryColor;
     return Scaffold(
         body: Center(
       // alignment: Alignment.centerRight,

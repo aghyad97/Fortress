@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
     if (time != null) {
       DateTime original = DateTime.parse(time);
       var difference = DateTime.now().difference(original).inMinutes;
-      if (difference > 120) {
-        // 2 hour expire time, need to get this from jwt though :(
+      if (difference > (60 * 24 * 30)) {
+        // 30 days expire time, need to get this from jwt though :(
         return false;
       }
     }
