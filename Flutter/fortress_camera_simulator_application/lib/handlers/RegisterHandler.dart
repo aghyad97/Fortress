@@ -7,7 +7,7 @@ class RegisterHandler {
   Response response;
 
   BaseOptions options = new BaseOptions(
-    baseUrl: "https://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
+    baseUrl: "http://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
     connectTimeout: 5000,
     receiveTimeout: 5000,
     contentType: Headers.formUrlEncodedContentType,
@@ -44,6 +44,7 @@ class RegisterHandler {
         print(e.response);
         return e.response.data;
       } else {
+        print('error!');
         return {
           'status': '-1',
           'message': 'Something went wrong, try again later',

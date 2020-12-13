@@ -8,7 +8,7 @@ class LoginHandler {
   Response response;
 
   BaseOptions options = new BaseOptions(
-    baseUrl: "https://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
+    baseUrl: "http://" + Globals.IP_ADDRESS + ':' + Globals.PORT,
     connectTimeout: 15000,
     receiveTimeout: 15000,
     contentType: Headers.formUrlEncodedContentType,
