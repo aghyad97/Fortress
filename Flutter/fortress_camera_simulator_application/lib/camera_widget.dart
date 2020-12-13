@@ -146,6 +146,7 @@ class CameraWidget extends StatelessWidget {
           backgroundColor: Colors.grey[400],
         );
         _publishImage(img, 'project/images', true);
+        // stop publishing for 5 seconds after recieving a prediction
         await Future.delayed(const Duration(seconds: 5), () => "5");
         available.toggle();
       }

@@ -40,8 +40,9 @@ class WelcomePage extends StatelessWidget {
           Padding(padding: EdgeInsets.all(Get.height * 0.02)),
           Container(
             child: Text(
-              'Welcome to Fortress',
+              'Welcome to the Security Camera Simulator',
               style: TextStyle(fontSize: 30),
+              textAlign: TextAlign.center,
             ),
             alignment: Alignment.center,
           ),

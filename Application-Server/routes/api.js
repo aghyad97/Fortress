@@ -62,10 +62,10 @@ router.get('/getSensorValue', function(req, res) {
     try {
         // default values if query does not specify a value
         var query = {email: decodedToken['email']};
-        var limit = 10;
+        var limit = 10; // by default, retreive the last 10 minutes of sensor information
         if (req.query.limit) 
             limit = parseInt(req.query.limit);
-        const docs = sensorModel.find(query).sort({_id: -1}).limit(limit * 60 / 2.5); // gets the most recent 5 documents in the image collection
+        const docs = sensorModel.find(query).sort({_id: -1}).limit(limit * 60 / 4);
         docs.lean().exec(function (err, data) { // transforms documents into JSON
             if (err) 
                 throw err;
