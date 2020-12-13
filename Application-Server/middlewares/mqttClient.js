@@ -63,7 +63,6 @@ mqttClient.on('message', function (topic, message) {
     else if (topic == 'project/images') {
         var imageInfo = JSON.parse(message.toString());
         if (imageInfo.isPredict && isEnabled) {
-            console.log('found person!')
             // Publishes message to be read by the main app so it can display notification
             mqttClient.publish('project/foundperson', Date.now().toString());
             http.request(httpRequestOptions).end();

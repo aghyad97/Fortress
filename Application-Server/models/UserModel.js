@@ -11,10 +11,4 @@ var UserSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 
-// UserSchema
-// 	.virtual("fullName")
-// 	.get(function () {
-// 		return this.fullName;
-// 	});
-
 module.exports = mongoose.model("User", UserSchema);

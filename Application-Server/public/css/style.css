@@ -2,6 +2,12 @@
 
   background-image: url('https://app.vysor.io/img/background.jpg');
 }
+body {
+  height: 100%;
+  background-image: url('/static/images/5fd5eb2fee492.jpg') !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
 .purple-card {
   background: linear-gradient(256deg, rgba(96,24,168,1) 0%, rgba(106,41,171,1) 51%, rgba(155,60,250,1) 100%) !important;
