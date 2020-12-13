@@ -43,6 +43,12 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
+
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+
 $(function () {
   client.connect(options);
   $.ajax({
@@ -58,13 +64,37 @@ $(function () {
     },
   });
 
+
+  sleep(500).then(() => {
+    $.ajax({
+      type: 'GET',
+      url: '/api/getSensorValue?limit=1',
+      success: function (values) {
+        let valuesJson = JSON.parse(values.data);
+        let array = new Array();
+        let a = ['time', 'x', 'y', 'z', 'proximity'];
+        array.push(a);
+        for (let index = 0; index < valuesJson.length; index++) {
+          const dataTypeX = valuesJson[index]['x'];
+          const dataTypeY = valuesJson[index]['y'];
+          const dataTypeZ = valuesJson[index]['z'];
+          const dataTypeProximity = valuesJson[index]['proximity'];
+          const dataTypeTime = valuesJson[index]['createdAt'];
+          a = [dataTypeTime, dataTypeX, dataTypeY, dataTypeZ, dataTypeProximity]
+          array.push(a);
+        }
+        console.log(array);
+        drawChart(array);
+      },
+    });
+  });
+
+
   $.ajax({
     type: 'GET',
     url: '/api/getimages?isPredict=true&limit=1',
     success: function (data) {
-      console.log();
       let json = JSON.parse(data['data']);
-      console.log(json[0]['image']);
       $('.predictedImage').append('<img class="col-lg-12 col-12" src="data:image/png;base64, ' + json[0]['image'] + '"/>');
     },
   });
