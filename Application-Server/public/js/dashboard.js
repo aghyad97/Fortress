@@ -50,6 +50,9 @@ function sleep(time) {
 
 
 $(function () {
+  $("#system-toggle").attr('checked', 'true');
+  $('#system-status').removeClass('card-header-danger');
+  $('#system-status').addClass('card-header-success');
   client.connect(options);
   $.ajax({
     type: 'GET',
@@ -64,8 +67,15 @@ $(function () {
     },
   });
 
+  $.ajax({
+    type: 'POST',
+    data: true,
+    url: '/api/togglesystem',
+    success: function (data) {
+    },
+  });
 
-  sleep(500).then(() => {
+  sleep(1000).then(() => {
     $.ajax({
       type: 'GET',
       url: '/api/getSensorValue?limit=1',
@@ -83,7 +93,6 @@ $(function () {
           a = [dataTypeTime, dataTypeX, dataTypeY, dataTypeZ, dataTypeProximity]
           array.push(a);
         }
-        console.log(array);
         drawChart(array);
       },
     });
@@ -98,27 +107,28 @@ $(function () {
       $('.predictedImage').append('<img class="col-lg-12 col-12" src="data:image/png;base64, ' + json[0]['image'] + '"/>');
     },
   });
-
+  
   client.onMessageArrived = function (message) {
     console.log(message);
     if (message.destinationName == "project/images") {
       var data = JSON.parse(message.payloadString);
       let isPredict = data['isPredict'];
-      console.log(isPredict);
       let email = data['email'];
-      console.log(email);
       let cookieEmail = getCookie(email);
-      console.log(cookieEmail);
       if (isPredict && email === cookieEmail) {
         $('.predictedImage').empty();
         $('.predictedImage').append('<img src="data:image/png;base64, ' + data['image'] + '"/>');
       }
     } else if (message.destinationName == "project/foundperson") {
-      $('.notifcationsMessages').append('<p>Found person at ' + Date(Number(message.payloadString)) + '</p>');
+      $('#foundPersonDiv').css('height' ,$(document).height()*0.25)
+      $('#foundPersonDiv').css('overflow-y','scroll' )
+      $('.notifcationsMessages').prepend('<p>Found person at ' + Date(Number(message.payloadString)) + '</p>');
     }
   };
   // toggle systemdestinationName == 
   $("#system-toggle").click(function () {
+    // $('#system-toggle').addClass('disabled');
+    $('#system-toggle').attr('disabled', true);
     $.ajax({
       type: 'POST',
       data: $('#system-toggle').is(":checked"),
@@ -133,7 +143,11 @@ $(function () {
           $('#system-status').addClass('card-header-danger');
         }
       },
+      complete: function (jqXHR, textStatus) {
+        $('#system-toggle').attr('disabled', false);
+      }
     });
+
   });
   // pictures of the camera
   var splide = new Splide('.splide', {

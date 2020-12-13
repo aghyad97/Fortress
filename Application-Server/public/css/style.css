@@ -5,8 +5,32 @@
 body {
   height: 100%;
   background-image: url('/static/images/5fd5eb2fee492.jpg') !important;
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-size: cover;
+}
+
+.fixed-height-size {
+  height: 20% !important;
+  overflow-y: scroll !important;
+}
+
+.pink-card {
+  background: linear-gradient(270deg, rgba(144,73,255,1) 0%, rgba(122,60,250,1) 100%) !important;
+}
+
+.pinkShade-card {
+  background: linear-gradient(270deg, rgba(96,88,227,1) 57%, rgba(71,60,250,1) 93%) !important;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
 
 .purple-card {

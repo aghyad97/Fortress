@@ -15,7 +15,7 @@ block content
             .card-header.card-header-warning.purple-card
               h4.card-title Notifications
               p.card-category Last Notifications
-            .card-body
+            .card-body(id='foundPersonDiv')
                 .notifcationsMessages
                 
         .col-md-4
@@ -35,13 +35,13 @@ block content
             .card-header.card-header-warning.purple-card
               h4.card-title Predicted Images
               p.card-category These pictures are updated every time there is someone near the safe
-            .card-body.table-responsive
+            .card-body.table-responsive.fixed-height-size
               table.table.table-hover
                 thead.text-warning
                   .predictedImage
         .col-lg-6.col-md-6
           .card
-            .card-header.card-header-success
+            .card-header.card-header-success.pink-card
               h4.card-title Pictures From Camera
               p.card-category These pictures are updated every 15 seconds
                 p Please enter number of minutes
@@ -55,7 +55,7 @@ block content
                       ul.splide__list
         .col-lg-6.col-md-6
           .card.card-chart
-            .card-header.card-header-success
+            .card-header.card-header-success.pinkShade-card
               h4.card-title Sensors Data
               p.card-category To get sensors data in minutes
             .card-body
